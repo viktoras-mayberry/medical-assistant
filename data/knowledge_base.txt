@@ -1,0 +1,93 @@
+
+FAQ - AI Travel Assistant
+
+Q: What services do you offer?
+A: I'm an AI travel assistant that can help you with trip planning, destination recommendations, booking assistance, travel tips, and answering questions about various travel destinations.
+
+Q: How can you help me plan my trip?
+A: I can help you create itineraries, suggest destinations based on your preferences, recommend accommodations, provide information about local attractions, weather conditions, and travel requirements.
+
+Q: What destinations do you know about?
+A: I have knowledge about destinations worldwide, including popular tourist spots, hidden gems, cultural sites, adventure locations, and business travel destinations.
+
+Q: Can you help with booking flights and hotels?
+A: I can provide guidance on booking platforms, compare options, and give tips on finding the best deals, but I cannot make actual bookings for you.
+
+Q: What about travel documents and visa requirements?
+A: I can provide general information about visa requirements, passport validity, and travel documents needed for different countries, but always verify with official sources.
+
+Q: Do you provide real-time information?
+A: I provide general travel information and tips. For real-time updates like flight status, weather, or current events, please check official sources.
+
+Q: How do I use the voice feature?
+A: Simply click and hold the microphone button to record your voice message. Release to send. I'll respond with voice as well!
+
+Q: What languages do you support?
+A: Currently, I primarily support English, but I can understand and respond to basic queries in several languages.
+
+Q: How can I find cheap flights?
+A: I recommend using flight comparison sites, being flexible with dates, considering nearby airports, and booking in advance for better deals.
+
+Q: What should I pack for my trip?
+A: Pack based on your destination's weather, planned activities, and duration. Always include essentials like passport, medications, and weather-appropriate clothing.
+
+Q: How do I stay safe while traveling?
+A: Research your destination, keep copies of important documents, stay aware of your surroundings, use reputable transportation, and avoid risky areas.
+
+Q: What about travel insurance?
+A: I recommend getting travel insurance that covers medical emergencies, trip cancellations, and lost luggage. Compare different providers for the best coverage.
+
+Q: Can you help with cultural tips?
+A: Yes! I can provide information about local customs, etiquette, dining traditions, and cultural norms to help you travel respectfully.
+
+Q: What if I have dietary restrictions?
+A: I can help you find restaurants that accommodate special diets, provide translations for dietary needs, and suggest safe food options for various dietary requirements.
+
+Q: How do I deal with jet lag?
+A: I can provide strategies for minimizing jet lag including adjusting sleep schedules, staying hydrated, and managing light exposure.
+
+Q: What are some budget travel tips?
+A: Consider traveling during off-peak seasons, use public transportation, stay in hostels or budget accommodations, and look for free activities and attractions.
+
+Q: What's the best time to visit Europe?
+A: Spring (April-May) and fall (September-October) offer pleasant weather and fewer crowds. Summer is peak season with higher prices. Winter is great for Christmas markets and skiing.
+
+Q: How do I exchange money while traveling?
+A: Use ATMs for the best exchange rates, notify your bank of travel plans, avoid airport exchange counters, and consider getting a travel-friendly credit card.
+
+Q: What should I do if I lose my passport abroad?
+A: Contact your embassy or consulate immediately, file a police report, have backup copies of your documents, and apply for an emergency travel document.
+
+Q: How can I stay connected while traveling?
+A: Options include international roaming plans, local SIM cards, portable WiFi devices, and using WiFi at hotels and cafes.
+
+Q: What's the best way to learn basic phrases in a foreign language?
+A: Use language learning apps, carry a phrasebook, practice common phrases before your trip, and don't be afraid to make mistakes - locals appreciate the effort!
+
+Q: How do I avoid tourist traps?
+A: Research destinations beforehand, ask locals for recommendations, avoid restaurants with multilingual menus near tourist sites, and explore neighborhoods where locals live.
+
+Q: What's the most important travel tip you can give?
+A: Always have backup plans, stay flexible, keep important documents secure, trust your instincts, and most importantly - enjoy the journey and embrace new experiences!
+
+Q: How do I handle medical emergencies abroad?
+A: Get travel insurance before you go, know the emergency numbers in your destination, carry a basic first aid kit, and research medical facilities in advance.
+
+Q: What are some solo travel safety tips?
+A: Stay in well-reviewed accommodations, share your itinerary with someone at home, trust your instincts, avoid displaying expensive items, and stay connected with regular check-ins.
+
+Q: How can I make my luggage more secure?
+A: Use TSA-approved locks, keep valuables in carry-on, use luggage tags with contact info, take photos of your luggage, and consider using a GPS tracker.
+
+Q: What's the best way to research destinations?
+A: Use multiple sources like travel blogs, official tourism sites, reviews on TripAdvisor, YouTube travel vlogs, and guidebooks for comprehensive information.
+
+Q: How do I handle currency in different countries?
+A: Research local currency, understand exchange rates, use ATMs for cash, keep small bills for tips, and have multiple payment methods available.
+
+Q: What should I know about tipping customs?
+A: Tipping customs vary by country. In the US, 15-20% is standard for restaurants. In Japan, tipping can be offensive. Research local customs before you travel.
+
+Q: How can I experience local culture authentically?
+A: Stay in local neighborhoods, eat at local restaurants, use public transportation, learn basic phrases, attend local events, and be respectful of customs and traditions.
+                

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hermex - AI Travel Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 450px;
+            height: 80vh;
+            max-height: 700px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #075e54 0%, #128c7e 100%);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-end;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.ai {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 75%;
+            padding: 15px 18px;
+            border-radius: 20px;
+            position: relative;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .message-bubble:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #dcf8c6 0%, #c8e6c9 100%);
+            color: #2e7d32;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.ai .message-bubble {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 5px;
+        }
+
+        .voice-message {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 180px;
+        }
+
+        .voice-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: linear-gradient(135deg, #075e54 0%, #128c7e 100%);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .message.user .voice-icon {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+        }
+
+        .voice-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .play-button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #075e54;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            background: rgba(7, 94, 84, 0.1);
+            transform: scale(1.1);
+        }
+
+        .message.user .play-button {
+            color: #2e7d32;
+        }
+
+        .message.user .play-button:hover {
+            background: rgba(46, 125, 50, 0.1);
+        }
+
+        .voice-duration {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .text-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            outline: none;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .text-input:focus {
+            border-color: #075e54;
+            box-shadow: 0 0 0 3px rgba(7, 94, 84, 0.1);
+        }
+
+        .voice-button, .send-button {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #075e54 0%, #128c7e 100%);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(7, 94, 84, 0.3);
+        }
+
+        .voice-button:hover, .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(7, 94, 84, 0.4);
+        }
+
+        .voice-button.recording {
+            background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 100%);
+            animation: recordingPulse 1s infinite;
+        }
+
+        @keyframes recordingPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .status {
+            text-align: center;
+            padding: 12px;
+            font-size: 13px;
+            color: #666;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            font-weight: 500;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid #075e54;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #c62828;
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 15px;
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #075e54;
+            animation: typingDot 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingDot {
+            0%, 80%, 100% { opacity: 0.3; }
+            40% { opacity: 1; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .chat-container {
+                height: 100vh;
+                border-radius: 0;
+                max-height: none;
+            }
+            
+            .message-bubble {
+                max-width: 85%;
+            }
+            
+            .chat-header {
+                padding: 20px;
+            }
+            
+            .chat-header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="status-indicator"></div>
+            <h1>🎙️ Hermex</h1>
+            <p>Your AI Travel Assistant</p>
+        </div>
+        
+        <div class="chat-messages" id="messages">
+            <div class="welcome-message">
+                <p>👋 Welcome to Hermex! I'm your AI travel assistant.</p>
+                <p>Send me a voice message or type your travel questions!</p>
+            </div>
+            
+            <div class="message ai">
+                <div class="message-bubble">
+                    <div class="voice-message">
+                        <div class="voice-icon">🤖</div>
+                        <div class="voice-controls">
+                            <button class="play-button" onclick="playWelcomeMessage()">▶️</button>
+                            <span class="voice-duration">0:05</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 13px; color: #666;">
+                        Click to hear my welcome message!
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status" id="status">Ready to help you plan your next adventure! 🌍</div>
+        
+        <div class="chat-input">
+            <input type="text" class="text-input" id="textInput" placeholder="Ask me about travel, destinations, tips..." />
+            <button class="send-button" id="sendButton" onclick="sendTextMessage()">📤</button>
+            <button class="voice-button" id="voiceButton">🎙️</button>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://127.0.0.1:8000";
+        const messagesContainer = document.getElementById('messages');
+        const statusElement = document.getElementById('status');
+        const voiceButton = document.getElementById('voiceButton');
+        const textInput = document.getElementById('textInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        let audioContext;
+        let currentPlayingAudio = null;
+        let typingIndicator = null;
+
+        // Initialize audio context
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        // Welcome message
+        function playWelcomeMessage() {
+            const welcomeText = "Hello! I'm Hermex, your AI travel assistant. I'm here to help you plan amazing trips, discover new destinations, and answer all your travel questions. You can send me voice messages or type your questions. Let's start planning your next adventure!";
+            playTextAsVoice(welcomeText);
+        }
+
+        // Play text as voice with enhanced error handling
+        async function playTextAsVoice(text) {
+            try {
+                updateStatus('🔊 Converting to speech...');
+                
+                const response = await fetch(`${API_BASE}/speak`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: text})
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const audio = new Audio(URL.createObjectURL(blob));
+                    
+                    if (currentPlayingAudio) {
+                        currentPlayingAudio.pause();
+                    }
+                    
+                    currentPlayingAudio = audio;
+                    
+                    audio.onplay = () => updateStatus('🎵 Playing audio...');
+                    audio.onended = () => updateStatus('Ready to help you plan your next adventure! 🌍');
+                    
+                    await audio.play();
+                } else {
+                    throw new Error('Failed to generate speech');
+                }
+            } catch (error) {
+                console.error('Error playing text as voice:', error);
+                showError('Could not play audio. Please check your connection.');
+                updateStatus('Ready to help you plan your next adventure! 🌍');
+            }
+        }
+
+        // Enhanced voice recording functionality
+        voiceButton.addEventListener('mousedown', startRecording);
+        voiceButton.addEventListener('mouseup', stopRecording);
+        voiceButton.addEventListener('mouseleave', stopRecording);
+        
+        // Touch events for mobile
+        voiceButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startRecording();
+        });
+        voiceButton.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            stopRecording();
+        });
+
+        async function startRecording() {
+            if (isRecording) return;
+            
+            try {
+                initAudioContext();
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        sampleRate: 16000
+                    }
+                });
+                
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType: 'audio/webm;codecs=opus'
+                });
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    await sendVoiceMessage(audioBlob);
+                    
+                    // Stop all tracks
+                    stream.getTracks().forEach(track => track.stop());
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+                voiceButton.classList.add('recording');
+                voiceButton.textContent = '🔴';
+                updateStatus('🎙️ Recording... Release to send');
+                
+            } catch (error) {
+                console.error('Error starting recording:', error);
+                showError('Could not access microphone. Please check your browser permissions.');
+                updateStatus('Ready to help you plan your next adventure! 🌍');
+            }
+        }
+
+        function stopRecording() {
+            if (!isRecording) return;
+            
+            mediaRecorder.stop();
+            isRecording = false;
+            voiceButton.classList.remove('recording');
+            voiceButton.textContent = '🎙️';
+            updateStatus('🔄 Processing your message...');
+        }
+
+        async function sendVoiceMessage(audioBlob) {
+            try {
+                // Add user voice message to chat
+                addVoiceMessage('user', audioBlob);
+                showTypingIndicator();
+                
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'voice_message.webm');
+                
+                const response = await fetch(`${API_BASE}/voice-chat`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                hideTypingIndicator();
+                
+                if (response.ok) {
+                    const transcribedText = response.headers.get('X-Transcribed-Text');
+                    const aiResponse = response.headers.get('X-AI-Response');
+                    
+                    // Update user message with transcribed text
+                    if (transcribedText) {
+                        updateLastUserMessage(transcribedText);
+                    }
+                    
+                    // Add AI voice response
+                    const aiAudioBlob = await response.blob();
+                    addVoiceMessage('ai', aiAudioBlob, aiResponse);
+                    
+                    updateStatus('Ready to help you plan your next adventure! 🌍');
+                } else {
+                    throw new Error('Server error processing voice message');
+                }
+                
+            } catch (error) {
+                console.error('Error sending voice message:', error);
+                hideTypingIndicator();
+                showError('Could not process your voice message. Please try again.');
+                updateStatus('Ready to help you plan your next adventure! 🌍');
+            }
+        }
+
+        async function sendTextMessage() {
+            const message = textInput.value.trim();
+            if (!message) return;
+            
+            // Add user text message
+            addTextMessage('user', message);
+            textInput.value = '';
+            showTypingIndicator();
+            
+            try {
+                updateStatus('🤔 Thinking...');
+                
+                const response = await fetch(`${API_BASE}/chat`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message})
+                });
+                
+                hideTypingIndicator();
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Convert AI response to voice and add to chat
+                    const voiceResponse = await fetch(`${API_BASE}/speak`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({message: data.response})
+                    });
+                    
+                    if (voiceResponse.ok) {
+                        const aiAudioBlob = await voiceResponse.blob();
+                        addVoiceMessage('ai', aiAudioBlob, data.response);
+                    } else {
+                        addTextMessage('ai', data.response);
+                    }
+                    
+                    updateStatus('Ready to help you plan your next adventure! 🌍');
+                } else {
+                    throw new Error('Server error getting response');
+                }
+                
+            } catch (error) {
+                console.error('Error sending text message:', error);
+                hideTypingIndicator();
+                showError('Could not send your message. Please try again.');
+                updateStatus('Ready to help you plan your next adventure! 🌍');
+            }
+        }
+
+        function addVoiceMessage(sender, audioBlob, text = '') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            
+            // Calculate duration when audio loads
+            audio.addEventListener('loadedmetadata', () => {
+                const duration = Math.round(audio.duration);
+                const durationElement = messageDiv.querySelector('.voice-duration');
+                if (durationElement) {
+                    const minutes = Math.floor(duration / 60);
+                    const seconds = duration % 60;
+                    durationElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            });
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    <div class="voice-message">
+                        <div class="voice-icon">${sender === 'user' ? '👤' : '🤖'}</div>
+                        <div class="voice-controls">
+                            <button class="play-button" onclick="playVoiceMessage(this, '${audioUrl}')">▶️</button>
+                            <span class="voice-duration">0:00</span>
+                        </div>
+                    </div>
+                    ${text ? `<div style="margin-top: 10px; font-size: 13px; color: #666; font-style: italic;">${text}</div>` : ''}
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function addTextMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble">
+                    ${text}
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function updateLastUserMessage(transcribedText) {
+            const messages = messagesContainer.querySelectorAll('.message.user');
+            if (messages.length > 0) {
+                const lastMessage = messages[messages.length - 1];
+                const existingText = lastMessage.querySelector('.message-bubble div:last-child');
+                if (!existingText || !existingText.textContent.includes(transcribedText)) {
+                    const textDiv = document.createElement('div');
+                    textDiv.style.marginTop = '10px';
+                    textDiv.style.fontSize = '13px';
+                    textDiv.style.color = '#666';
+                    textDiv.style.fontStyle = 'italic';
+                    textDiv.textContent = transcribedText;
+                    lastMessage.querySelector('.message-bubble').appendChild(textDiv);
+                }
+            }
+        }
+
+        function playVoiceMessage(button, audioUrl) {
+            const audio = new Audio(audioUrl);
+            
+            if (currentPlayingAudio) {
+                currentPlayingAudio.pause();
+                // Reset all play buttons
+                document.querySelectorAll('.play-button').forEach(btn => btn.textContent = '▶️');
+            }
+            
+            currentPlayingAudio = audio;
+            button.textContent = '⏸️';
+            
+            audio.onended = () => {
+                button.textContent = '▶️';
+                currentPlayingAudio = null;
+            };
+            
+            audio.onerror = () => {
+                button.textContent = '⚠️';
+                showError('Could not play audio message');
+            };
+            
+            audio.play();
+        }
+
+        function showTypingIndicator() {
+            typingIndicator = document.createElement('div');
+            typingIndicator.className = 'message ai';
+            typingIndicator.innerHTML = `
+                <div class="typing-indicator">
+                    <div class="voice-icon">🤖</div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingIndicator);
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            if (typingIndicator) {
+                typingIndicator.remove();
+                typingIndicator = null;
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            messagesContainer.appendChild(errorDiv);
+            scrollToBottom();
+            
+            // Auto-remove error after 5 seconds
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        function updateStatus(message) {
+            statusElement.textContent = message;
+        }
+
+        function scrollToBottom() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Text input enter key handler
+        textInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendTextMessage();
+            }
+        });
+
+        // Auto-resize text input
+        textInput.addEventListener('input', () => {
+            textInput.style.height = 'auto';
+            textInput.style.height = textInput.scrollHeight + 'px';
+        });
+
+        // Check server connection on load
+        async function checkServerConnection() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                if (response.ok) {
+                    updateStatus('Ready to help you plan your next adventure! 🌍');
+                } else {
+                    throw new Error('Server not responding');
+                }
+            } catch (error) {
+                updateStatus('⚠️ Server connection issue. Please check if the server is running.');
+                showError('Cannot connect to server. Please make sure the backend is running on port 8000.');
+            }
+        }
+
+        // Initialize
+        checkServerConnection();
+        
+        // Auto-focus text input on desktop
+        if (window.innerWidth > 768) {
+            textInput.focus();
+        }
+    </script>
+</body>
+</html>
