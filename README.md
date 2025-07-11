@@ -1,25 +1,30 @@
-# 🎙️ Voice Chat AI Travel Assistant
+# 🩺 Medical AI Assistant
 
-A voice chat application that allows users to interact with an AI travel assistant through both voice notes and text messages. The AI responds with voice messages, creating a natural conversation experience.
+A sophisticated voice-enabled medical assistant application that allows users to interact with an AI healthcare companion through both voice notes and text messages. The AI provides medical information, guidance, and support while maintaining appropriate medical disclaimers and encouraging professional consultation when necessary.
 
 ## Features
 
 - **Voice-to-Voice Communication**: Record voice messages and get AI responses in voice
-- **Speech-to-Text**: Automatic transcription of voice messages using OpenAI Whisper
+- **Speech-to-Text**: Automatic transcription of voice messages using Google Speech Recognition
 - **Text-to-Speech**: AI responses converted to natural speech using ElevenLabs
-- **Knowledge Base**: Comprehensive travel FAQ and information database
-- **WhatsApp-style Interface**: Familiar chat interface with voice message bubbles
+- **Medical LLM Integration**: Advanced medical knowledge powered by fine-tuned language models
+- **Professional Medical Interface**: Clean, healthcare-themed user interface
 - **Dual Input**: Support for both voice and text input
 - **Real-time Audio**: Play voice messages with audio controls
+- **Emergency Detection**: Automatic detection of emergency situations with appropriate warnings
+- **Medical Disclaimers**: Appropriate medical disclaimers and professional consultation reminders
+- **Category Classification**: Intelligent categorization of medical queries (symptoms, medications, treatments, etc.)
 
 ## Technology Stack
 
 - **Backend**: FastAPI (Python)
+- **Medical LLM**: OpenAI GPT-4 / Custom Medical LLM
 - **Speech-to-Text**: Google Speech Recognition (Free)
-- **AI Chat**: Custom NLP with similarity matching
+- **AI Processing**: Advanced medical knowledge base with emergency detection
 - **Text-to-Speech**: ElevenLabs API
-- **Frontend**: HTML5, CSS3, JavaScript
+- **Frontend**: HTML5, CSS3, JavaScript (Medical-themed UI)
 - **Audio**: Web Audio API, MediaRecorder API
+- **Medical Safety**: Built-in disclaimers and emergency detection
 
 ## Installation
 
@@ -139,47 +144,32 @@ python -m http.server 3000
 - **Description**: Health check endpoint
 - **Output**: Service status
 
-## Knowledge Base
+## LLM and Medical Information
 
-The AI uses a comprehensive knowledge base stored in `knowledge_base.txt` containing:
+The medical assistant is powered by an extensive language model with specialized medical knowledge, capable of providing information on:
 
-- Travel planning guidance
-- Destination recommendations
-- Booking assistance
-- Safety tips
-- Cultural information
-- Emergency procedures
-- And much more...
+- Medical symptoms and conditions
+- Medications and treatments
+- Health tips and preventive care
+- Emergency response suggestions
 
-You can customize the knowledge base by editing this file to add more travel information or modify existing responses.
+The application is fine-tuned to detect emergency situations and emphasize the need for professional medical consultations.
 
 ## Customization
 
-### Adding More Travel Information
+### Medical Query Handling
 
-Edit `knowledge_base.txt` and add new FAQ entries:
-
-```text
-Q: Your new question here?
-A: Your detailed answer here with helpful travel information.
-```
-
-### Changing AI Personality
-
-Modify the system prompt in `main.py` in the `get_response` method:
-
-```python
-system_prompt = f"""
-You are a helpful AI travel assistant. [Add your personality traits here]
-...
-"""
-```
+The medical assistant is designed to handle queries in various categories, and it categorizes them using advanced NLP techniques. This is essential for improving response accuracy and ensuring user safety.
 
 ### Voice Customization
 
-1. Browse ElevenLabs voices in your dashboard
-2. Copy the voice ID of your preferred voice
-3. Update the `voice_id` variable in the backend
+1. Browse ElevenLabs voices in your dashboard.
+2. Copy the voice ID of your preferred voice.
+3. Update the `voice_id` variable in the backend.
+
+### Changing AI Personality
+
+Modify the system prompt in `medical_llm.py` for specific personality traits or information emphasis.
 
 ## Troubleshooting
 
@@ -229,24 +219,33 @@ For production deployment:
 ## File Structure
 
 ```
-voice-chat-ai-assistant/
-├── main.py                    # Backend API server
-├── voice_chat_frontend.html   # Frontend interface
-├── knowledge_base.txt         # Travel information database
+medical-ai-assistant/
+├── backend/
+│   ├── main.py                # Backend API server
+│   ├── medical_llm.py         # Medical LLM client
+│   └── config.py              # Configuration settings
+├── frontend/
+│   └── index.html             # Medical-themed frontend interface
+├── data/
+│   └── knowledge_base.txt     # Legacy knowledge base (deprecated)
 ├── requirements.txt           # Python dependencies
 ├── .env.example              # Environment variables template
 ├── README.md                 # This file
 └── .env                      # Your API keys (create this)
 ```
 
+## Medical Disclaimer
+
+⚠️ **Important Medical Disclaimer**: This application is for educational and informational purposes only. The medical information provided by this AI assistant should not replace professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare professionals for medical concerns.
+
 ## License
 
-This project is an open source .
+This project is open source and available under the MIT License.
 
 ## Contributing
 
-Feel free to submit issues, feature requests, or pull requests to improve the application.
+Feel free to submit issues, feature requests, or pull requests to improve the application. Please ensure that any medical information contributions are accurate and include appropriate disclaimers.
 
 ---
 
-Enjoy your voice-powered AI travel assistant! 🌍✈️🎙️
+Enjoy your voice-powered AI medical assistant! 🩺💬🎙️

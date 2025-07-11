@@ -1,18 +1,26 @@
 import os
 import tempfile
 import re
+import json
+import logging
+from datetime import datetime
+from typing import Optional, Dict, Any, List
 from io import BytesIO
 from pathlib import Path
-from difflib import SequenceMatcher
 
-from fastapi import FastAPI, HTTPException, File, UploadFile
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, HTTPException, File, UploadFile, Depends
+from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from elevenlabs.client import ElevenLabs
 import speech_recognition as sr
 
 from config import Config
+from medical_llm import MedicalLLMClient, MedicalResponse
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Validate configuration
 Config.validate()
@@ -22,8 +30,8 @@ eleven = ElevenLabs(api_key=Config.ELEVENLABS_API_KEY)
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Voice Chat AI Assistant",
-    description="A voice-enabled travel assistant powered by AI",
+    title="Medical Chat AI Assistant",
+    description="A voice-enabled medical assistant powered by AI",
     version="1.0.0"
 )
 
@@ -39,22 +47,13 @@ app.add_middleware(
 class ChatRequest(BaseModel):
     message: str
 
-class KnowledgeBase:
-    def __init__(self, knowledge_file=None):
-        self.knowledge_file = knowledge_file or Config.KNOWLEDGE_BASE_PATH
-        self.knowledge = self.load_knowledge()
-        self.qa_pairs = self.parse_qa_pairs()
+class LLMClient:
+    def __init__(self, api_key=None):
+        self.api_key = api_key or "YOUR_API_KEY"
+        # Sample initialization, replace with actual model client initialization if needed
+        # self.model = SomeLLMClient(api_key=self.api_key)
         self.recognizer = sr.Recognizer()
-    
-    def load_knowledge(self):
         """Load knowledge base from text file"""
-        try:
-            if os.path.exists(self.knowledge_file):
-                with open(self.knowledge_file, 'r', encoding='utf-8') as f:
-                    return f.read()
-            else:
-                # Create default knowledge base if file doesn't exist
-                default_knowledge = """
 FAQ - AI Travel Assistant
 
 Q: What services do you offer?
@@ -136,25 +135,18 @@ A: Consider traveling during off-peak seasons, use public transportation, stay i
         
         return qa_pairs
 
-    def find_best_match(self, user_message):
-        """Find the best matching Q&A pair using similarity"""
-        user_message = user_message.lower().strip()
-        best_match = None
-        best_score = 0
-        
-        # Keywords for common travel topics
-        keywords = {
-            'booking': ['book', 'reserve', 'reservation', 'hotel', 'flight'],
-            'planning': ['plan', 'itinerary', 'schedule', 'organize'],
-            'safety': ['safe', 'safety', 'security', 'dangerous'],
-            'documents': ['passport', 'visa', 'document', 'id'],
-            'packing': ['pack', 'luggage', 'suitcase', 'clothes'],
-            'budget': ['cheap', 'budget', 'money', 'cost', 'price'],
-            'food': ['food', 'restaurant', 'eat', 'dining', 'meal'],
-            'culture': ['culture', 'custom', 'tradition', 'etiquette'],
-            'health': ['health', 'medical', 'insurance', 'sick'],
-            'transport': ['transport', 'flight', 'train', 'bus', 'taxi']
-        }
+    def query_llm(self, user_message):
+        """Query the LLM model to get medical information"""
+        user_message = user_message.strip()
+        response = "Sorry, I'm unable to process your request right now."
+        try:
+            # Mock query to LLM model, replace with actual API call
+            # response = self.model.query(user_message)
+            print(f"Querying LLM with message: {user_message}")
+            return "This is a mock response from the LLM model"
+        except Exception as e:
+            print(f"Error querying LLM: {e}")
+            return response
         
         # Check for keyword matches first
         for category, words in keywords.items():
@@ -177,7 +169,7 @@ A: Consider traveling during off-peak seasons, use public transportation, stay i
         return best_match, best_score
 
     def get_response(self, user_message):
-        """Get response using NLP matching"""
+        """Get response using the LLM model"""
         try:
             # Clean and normalize the message
             user_message = re.sub(r'[^\w\s]', '', user_message).strip()
@@ -185,16 +177,10 @@ A: Consider traveling during off-peak seasons, use public transportation, stay i
             if not user_message:
                 return "I didn't catch that. Could you please repeat your question?"
             
-            # Find best matching Q&A pair
-            best_match, score = self.find_best_match(user_message)
+            # Query LLM model for a response
+            llm_response = self.query_llm(user_message)
+            return llm_response
             
-            if best_match and score > 0.2:
-                question, answer = best_match
-                return answer
-            else:
-                # Generate a generic helpful response
-                return self.generate_generic_response(user_message)
-                
         except Exception as e:
             return "I'm having trouble processing your request right now. Please try again."
 
@@ -239,7 +225,7 @@ A: Consider traveling during off-peak seasons, use public transportation, stay i
             return f"Error processing audio: {e}"
 
 # Initialize knowledge base
-kb = KnowledgeBase()
+kb = LLMClient()
 
 @app.post("/voice-chat")
 async def voice_chat(audio: UploadFile = File(...)):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Setup script for Voice Chat AI Assistant.
+Setup script for Medical AI Assistant.
 """
 
 import os
@@ -40,7 +40,9 @@ def setup_environment():
         if env_example.exists():
             shutil.copy(env_example, env_file)
             print("✅ Created .env file from .env.example")
-            print("⚠️  Please edit .env file and add your ElevenLabs API key!")
+            print("⚠️  Please edit .env file and add your API keys!")
+            print("   - ElevenLabs API key (required for voice)")
+            print("   - OpenAI API key (optional, for advanced medical responses)")
         else:
             print("❌ .env.example file not found!")
             sys.exit(1)
@@ -61,7 +63,7 @@ def verify_directories():
 
 def main():
     """Main setup function."""
-    print("🎙️ Voice Chat AI Assistant Setup")
+    print("🩺 Medical AI Assistant Setup")
     print("=" * 40)
     
     check_python_version()
@@ -72,10 +74,12 @@ def main():
     print("\n" + "=" * 40)
     print("✅ Setup completed successfully!")
     print("\n📝 Next steps:")
-    print("1. Edit .env file with your ElevenLabs API key")
-    print("2. Run: python scripts/start_server.py")
-    print("3. Open frontend/index.html in your browser")
-    print("\n🎯 Happy chatting!")
+    print("1. Edit .env file with your API keys")
+    print("2. Run: python scripts/start_medical_assistant.py")
+    print("3. The medical assistant will open in your browser")
+    print("\n⚠️  Medical Disclaimer: This AI assistant is for educational purposes only.")
+    print("   Always consult healthcare professionals for medical advice.")
+    print("\n🩺 Ready to assist with medical information!")
 
 if __name__ == "__main__":
     main()
