@@ -1,19 +1,31 @@
-# 🩺 Medical AI Assistant
+# 🩺 Advanced Medical AI Assistant
 
-A sophisticated voice-enabled medical assistant application that allows users to interact with an AI healthcare companion through both voice notes and text messages. The AI provides medical information, guidance, and support while maintaining appropriate medical disclaimers and encouraging professional consultation when necessary.
+Welcome to the Medical AI Assistant, a state-of-the-art application that combines advanced medical language models with intuitive voice interaction. This sophisticated system goes beyond simple FAQ responses to provide comprehensive medical knowledge, insights, and guidance across all aspects of healthcare.
 
-## Features
+## 🚀 Project Vision
 
-- **Voice-to-Voice Communication**: Record voice messages and get AI responses in voice
-- **Speech-to-Text**: Automatic transcription of voice messages using Google Speech Recognition
-- **Text-to-Speech**: AI responses converted to natural speech using ElevenLabs
-- **Medical LLM Integration**: Advanced medical knowledge powered by fine-tuned language models
-- **Professional Medical Interface**: Clean, healthcare-themed user interface
-- **Dual Input**: Support for both voice and text input
-- **Real-time Audio**: Play voice messages with audio controls
-- **Emergency Detection**: Automatic detection of emergency situations with appropriate warnings
-- **Medical Disclaimers**: Appropriate medical disclaimers and professional consultation reminders
-- **Category Classification**: Intelligent categorization of medical queries (symptoms, medications, treatments, etc.)
+This isn't just another chatbot - it's a comprehensive medical knowledge companion designed to:
+- Provide evidence-based medical information across all specialties
+- Offer intelligent analysis of symptoms, conditions, and treatments
+- Serve as a bridge between patients and healthcare professionals
+- Deliver personalized health guidance while maintaining medical safety standards
+
+## ✨ Key Features
+
+### Core Capabilities
+- **Comprehensive Medical Knowledge**: Access to extensive medical databases covering symptoms, conditions, treatments, medications, and preventive care
+- **Dual Model Architecture**: Combines OpenAI's GPT-4 with fine-tuned local transformer models for specialized medical responses
+- **Voice-Enabled Interaction**: Natural speech recognition and synthesis for hands-free medical consultations
+- **Emergency Detection System**: Real-time identification of critical medical situations with immediate guidance
+- **Medical Query Classification**: Advanced NLP categorization for precise, context-aware responses
+- **Professional Interface**: Clean, accessible design optimized for medical use cases
+
+### Advanced Features
+- **Fine-Tuning Capabilities**: Customize models with domain-specific medical datasets
+- **Multi-Modal Processing**: Handle both voice and text inputs seamlessly
+- **Intelligent Fallbacks**: Robust response system ensuring continuous operation
+- **Medical Safety Protocols**: Built-in disclaimers and professional consultation reminders
+- **Real-Time Audio Processing**: High-quality speech synthesis and recognition
 
 ## Technology Stack
 
