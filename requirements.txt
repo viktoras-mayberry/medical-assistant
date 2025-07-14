@@ -5,9 +5,9 @@ elevenlabs==0.2.26
 python-multipart==0.0.6
 pydantic==2.5.0
 SpeechRecognition==3.10.0
-pyaudio==0.2.11
+# pyaudio==0.2.11  # Commented out due to Windows build issues
 openai==1.3.0
-aiofiles==0.23.2
+aiofiles==24.1.0
 loguru==0.7.2
 
 # Database dependencies

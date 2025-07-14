@@ -13,6 +13,11 @@ try:
 except ImportError:
     TRANSFORMERS_AVAILABLE = False
     print("Transformers not available. Install with: pip install transformers torch")
+    # Create placeholder classes to avoid import errors
+    class AutoModelForCausalLM:
+        pass
+    class AutoTokenizer:
+        pass
 
 logger = logging.getLogger(__name__)
 
@@ -38,8 +43,9 @@ class MedicalResponse:
 class MedicalLLMClient:
     """Advanced Medical LLM Client with OpenAI and local model integration"""
     
-    def __init__(self, api_key: str = None, model: str = "gpt-4", use_local_model: bool = False, local_model_name: str = "microsoft/DialoGPT-medium"):
-        self.api_key = api_key or "YOUR_OPENAI_API_KEY"
+    def __init__(self, api_key: str = None, model: str = "gpt-3.5-turbo", use_local_model: bool = False, local_model_name: str = "microsoft/DialoGPT-medium"):
+        import os
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY", "YOUR_OPENAI_API_KEY")
         self.model = model
         self.use_local_model = use_local_model
         self.local_model_name = local_model_name
@@ -63,10 +69,19 @@ class MedicalLLMClient:
         }
         
         # Initialize clients
-        self._initialize_client()
-        if self.use_local_model and TRANSFORMERS_AVAILABLE:
-            self._initialize_local_model()
+        # Automatic model selection
+        self._select_and_initialize_model()
     
+    def _select_and_initialize_model(self):
+        """Select and initialize the best available model"""
+        # Priority: OpenAI API > Local Model > Mock responses
+        if self.api_key and self.api_key != "YOUR_OPENAI_API_KEY":
+            self._initialize_client()
+        elif TRANSFORMERS_AVAILABLE:
+            self._initialize_local_model()
+        else:
+            logger.warning("No valid model or API key provided. Reverting to mock responses.")
+
     def _initialize_client(self):
         """Initialize OpenAI client"""
         try:
@@ -158,7 +173,7 @@ Remember: You are providing information, not medical diagnosis or treatment."""
             # Handle emergency queries
             if is_emergency:
                 return MedicalResponse(
-                    response=f"🚨 This appears to be a medical emergency. Please call emergency services immediately (911 in the US) or go to the nearest emergency room. Do not delay seeking immediate medical attention.\n\n{self.medical_disclaimer}",
+                    response="🚨 This appears to be a medical emergency. Please call emergency services immediately (911 in the US) or go to the nearest emergency room. Do not delay seeking immediate medical attention.",
                     confidence_score=1.0,
                     risk_level="critical",
                     is_emergency=True,
@@ -178,16 +193,13 @@ Remember: You are providing information, not medical diagnosis or treatment."""
             else:
                 response = self._get_mock_response(user_query, category)
             
-            # Add medical disclaimer
-            response_with_disclaimer = f"{response}\n\n{self.medical_disclaimer}"
-            
             # Determine risk level and recommendations
             risk_level = "moderate" if category in ["symptoms", "conditions"] else "low"
             sources = ["Medical knowledge base", "AI medical assistant"]
             recommendations = self._get_recommendations(category)
             
             return MedicalResponse(
-                response=response_with_disclaimer,
+                response=response,
                 confidence_score=0.8,
                 risk_level=risk_level,
                 is_emergency=False,
@@ -202,7 +214,7 @@ Remember: You are providing information, not medical diagnosis or treatment."""
         except Exception as e:
             logger.error(f"Error in medical LLM query: {e}")
             return MedicalResponse(
-                response=f"I apologize, but I'm having trouble processing your medical query right now. Please consult with a healthcare professional for medical concerns.\n\n{self.medical_disclaimer}",
+                response="I apologize, but I'm having trouble processing your medical query right now. Please consult with a healthcare professional for medical concerns.",
                 confidence_score=0.0,
                 risk_level="unknown",
                 is_emergency=False,
@@ -219,8 +231,10 @@ Remember: You are providing information, not medical diagnosis or treatment."""
         try:
             system_prompt = self._get_medical_system_prompt()
             
+            from openai import OpenAI
+            client = OpenAI(api_key=self.api_key)
             response = await asyncio.to_thread(
-                self.client.ChatCompletion.create,
+                client.chat.completions.create,
                 model=self.model,
                 messages=[
                     {"role": "system", "content": system_prompt},
@@ -378,19 +392,38 @@ Remember: You are providing information, not medical diagnosis or treatment."""
         return recommendations.get(category, recommendations["general"])
     
     def _get_mock_response(self, query: str, category: str) -> str:
-        """Generate mock medical responses for testing"""
+        """Generate enhanced medical responses for testing"""
+        query_lower = query.lower()
+        
+        # Enhanced responses based on specific queries
+        if "headache" in query_lower:
+            return "Headaches can be caused by various factors including stress, dehydration, lack of sleep, eye strain, or underlying medical conditions. Common types include tension headaches, migraines, and cluster headaches. For mild headaches, try rest, hydration, and over-the-counter pain relievers as directed. Seek medical attention if headaches are severe, sudden, persistent, or accompanied by fever, vision changes, or neurological symptoms."
+        
+        elif "fever" in query_lower:
+            return "Fever is a common symptom indicating that your body is fighting an infection. Normal body temperature is around 98.6°F (37°C). A fever is generally considered 100.4°F (38°C) or higher. For mild fevers, rest, fluids, and fever reducers like acetaminophen or ibuprofen can help. Seek medical care if fever exceeds 103°F (39.4°C), persists for more than 3 days, or is accompanied by severe symptoms like difficulty breathing, chest pain, or severe headache."
+        
+        elif "diabetes" in query_lower:
+            return "Diabetes is a condition where blood sugar levels are too high. Type 1 diabetes occurs when the body doesn't produce insulin, while Type 2 diabetes occurs when the body doesn't use insulin properly. Common symptoms include excessive thirst, frequent urination, fatigue, and blurred vision. Management includes blood sugar monitoring, proper diet, regular exercise, and medication as prescribed. Regular check-ups with healthcare providers are essential for proper management."
+        
+        elif "blood pressure" in query_lower or "hypertension" in query_lower:
+            return "High blood pressure (hypertension) is often called the 'silent killer' because it typically has no symptoms. Normal blood pressure is less than 120/80 mmHg. High blood pressure can lead to heart disease, stroke, and kidney problems. Lifestyle changes that can help include regular exercise, healthy diet (low sodium, high potassium), maintaining healthy weight, limiting alcohol, and managing stress. Medications may also be prescribed by your healthcare provider."
+        
+        elif "chest pain" in query_lower:
+            return "🚨 IMPORTANT: Chest pain can be a sign of a heart attack or other serious condition. If you're experiencing severe, crushing, or persistent chest pain, especially with shortness of breath, sweating, nausea, or pain radiating to arm/jaw, call 911 immediately. Other causes of chest pain can include muscle strain, acid reflux, or anxiety. However, any chest pain should be evaluated by a healthcare professional promptly."
+        
+        # Category-based responses
         mock_responses = {
-            "symptoms": f"I understand you're experiencing symptoms. While I can provide general information about symptoms, it's important to consult with a healthcare professional for proper evaluation and diagnosis of your specific situation.",
+            "symptoms": f"Based on your symptoms, I can provide general information. Common symptoms like those you're describing can have various causes. It's important to monitor your symptoms and consult with a healthcare professional for proper evaluation, especially if symptoms persist, worsen, or are accompanied by concerning signs.",
             
-            "medications": f"Regarding medications, I can provide general information about how medications work and their common uses. However, for specific medication advice, dosages, or interactions, please consult with a pharmacist or your healthcare provider.",
+            "medications": f"Regarding medications, I can share general information about how different classes of medications work and their common uses. However, medication decisions should always be made with your healthcare provider or pharmacist, who can consider your specific health conditions, other medications, and individual factors.",
             
-            "conditions": f"I can share general information about medical conditions and their characteristics. However, for proper diagnosis and treatment planning, it's essential to work with a qualified healthcare professional.",
+            "conditions": f"I can provide educational information about various medical conditions, including their common symptoms, risk factors, and general management approaches. However, for accurate diagnosis and personalized treatment plans, it's essential to work with qualified healthcare professionals.",
             
-            "treatments": f"There are various treatment approaches for different medical conditions. The best treatment plan depends on individual circumstances and should be determined by a healthcare provider who can evaluate your specific situation.",
+            "treatments": f"There are many treatment approaches available for different medical conditions, ranging from lifestyle modifications to medications and procedures. The best treatment plan depends on your specific situation, medical history, and individual factors that only a healthcare provider can properly assess.",
             
-            "prevention": f"Prevention is an important aspect of maintaining good health. I can share general prevention strategies, but for personalized prevention plans, consider consulting with a healthcare professional.",
+            "prevention": f"Prevention is indeed crucial for maintaining good health. This includes regular exercise, balanced nutrition, adequate sleep, stress management, avoiding harmful substances, and staying up-to-date with recommended screenings and vaccinations. Your healthcare provider can help develop a personalized prevention plan.",
             
-            "general": f"I'm here to help with general health information and education. For specific medical concerns or questions about your health, please consult with a qualified healthcare professional."
+            "general": f"I'm here to provide general health education and information. While I can share knowledge about medical topics, I cannot replace professional medical advice. For specific health concerns, symptoms, or medical questions, please consult with qualified healthcare professionals."
         }
         
         return mock_responses.get(category, mock_responses["general"])

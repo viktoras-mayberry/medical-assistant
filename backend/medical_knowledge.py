@@ -513,3 +513,7 @@ class MedicalCalculator:
             "Tachycardia (fast)": "If persistent or with symptoms, consult healthcare provider."
         }
         return recommendations.get(category, "Consult healthcare provider if concerned.")
+    
+    def get_symptoms(self):
+        """Get available symptoms for assessment"""
+        return list(self.symptom_checker.symptom_patterns.keys())

@@ -10,9 +10,9 @@ from passlib.context import CryptContext
 from fastapi import HTTPException, Depends, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from .database import get_db
-from .models import User
-from .schemas import TokenData
+from database import get_db
+from models import User
+from schemas import TokenData
 import logging
 
 # Configuration

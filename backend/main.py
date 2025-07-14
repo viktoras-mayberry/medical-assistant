@@ -16,8 +16,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, Field, validator
-from elevenlabs.client import ElevenLabs
-import speech_recognition as sr
+# Voice-related imports removed for non-voice backend
+# import speech_recognition as sr
+# import elevenlabs
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
@@ -39,11 +40,10 @@ logger = logging.getLogger(__name__)
 # Validate configuration
 Config.validate()
 
-# Initialize ElevenLabs client
-eleven = ElevenLabs(api_key=Config.ELEVENLABS_API_KEY)
+# Voice features removed
 
 # Initialize medical components
-medical_llm = MedicalLLMClient()
+medical_llm = MedicalLLMClient(use_local_model=True)
 medical_knowledge = MedicalKnowledgeEngine()
 medical_analytics = MedicalAnalytics()
 
@@ -111,133 +111,9 @@ class ChatRequest(BaseModel):
     patient_id: Optional[str] = None
     context: Optional[Dict[str, Any]] = None
 
-class VoiceChatRequest(BaseModel):
-    patient_id: Optional[str] = None
-    context: Optional[Dict[str, Any]] = None
+# Voice-related classes removed
 
-class AudioTranscriber:
-    """Handles audio transcription using speech recognition"""
-    
-    def __init__(self):
-        self.recognizer = sr.Recognizer()
-    
-    def transcribe_audio(self, audio_file_path: str) -> str:
-        """Transcribe audio using speech_recognition library"""
-        try:
-            with sr.AudioFile(audio_file_path) as source:
-                # Adjust for ambient noise
-                self.recognizer.adjust_for_ambient_noise(source)
-                # Listen for audio
-                audio = self.recognizer.listen(source)
-                
-            # Use Google's free speech recognition
-            text = self.recognizer.recognize_google(audio)
-            return text
-            
-        except sr.UnknownValueError:
-            return "I couldn't understand the audio. Please speak clearly and try again."
-        except sr.RequestError as e:
-            return f"Could not request results from speech recognition service; {e}"
-        except Exception as e:
-            return f"Error processing audio: {e}"
-
-# Initialize audio transcriber
-audio_transcriber = AudioTranscriber()
-
-@app.post("/voice-chat")
-async def voice_chat(
-    audio: UploadFile = File(...),
-    patient_id: Optional[str] = None,
-    context: Optional[str] = None
-):
-    """
-    Accepts voice note, converts to text, processes with medical AI, and returns voice response
-    """
-    start_time = datetime.now()
-    
-    try:
-        # Parse context if provided
-        parsed_context = json.loads(context) if context else {}
-        
-        # Save uploaded audio temporarily
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio:
-            content = await audio.read()
-            temp_audio.write(content)
-            temp_audio_path = temp_audio.name
-
-        # Convert speech to text using speech_recognition
-        user_text = audio_transcriber.transcribe_audio(temp_audio_path)
-        
-        # Get medical AI response
-        medical_response = await medical_llm.process_query(
-            query=user_text,
-            patient_id=patient_id,
-            context=parsed_context
-        )
-        
-        # Log analytics
-        response_time = (datetime.now() - start_time).total_seconds()
-        await medical_analytics.log_interaction(
-            interaction_type="voice_chat",
-            query=user_text,
-            response=medical_response.response,
-            patient_id=patient_id,
-            risk_level=medical_response.risk_level,
-            response_time=response_time,
-            metadata={
-                "audio_file_size": len(content),
-                "context": parsed_context,
-                "confidence_score": medical_response.confidence_score,
-                "emergency_detected": medical_response.is_emergency,
-                "sources": medical_response.sources
-            }
-        )
-        
-        # Convert AI response to speech
-        tts_response = eleven.text_to_speech.convert(
-            text=medical_response.response,
-            voice_id=Config.DEFAULT_VOICE_ID,
-            model_id=Config.TTS_MODEL,
-            output_format=Config.AUDIO_FORMAT
-        )
-        
-        audio_bytes = b"".join(tts_response)
-        
-        # Clean up temporary file
-        os.unlink(temp_audio_path)
-        
-        return StreamingResponse(
-            BytesIO(audio_bytes), 
-            media_type="audio/mpeg",
-            headers={
-                "X-Transcribed-Text": user_text,
-                "X-AI-Response": medical_response.response,
-                "X-Risk-Level": medical_response.risk_level,
-                "X-Emergency": str(medical_response.is_emergency),
-                "X-Confidence": str(medical_response.confidence_score)
-            }
-        )
-        
-    except Exception as e:
-        # Clean up temporary file if it exists
-        if 'temp_audio_path' in locals():
-            try:
-                os.unlink(temp_audio_path)
-            except:
-                pass
-        
-        # Log error
-        await medical_analytics.log_interaction(
-            interaction_type="voice_chat_error",
-            query=user_text if 'user_text' in locals() else "Unknown",
-            response=str(e),
-            patient_id=patient_id,
-            risk_level="unknown",
-            response_time=(datetime.now() - start_time).total_seconds(),
-            metadata={"error": str(e)}
-        )
-        
-        raise HTTPException(status_code=500, detail=f"Voice processing error: {e}")
+# Voice chat endpoint removed
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
@@ -294,22 +170,7 @@ async def chat(request: ChatRequest):
         
         raise HTTPException(status_code=500, detail=f"Chat error: {e}")
 
-@app.post("/speak")
-async def speak(request: ChatRequest):
-    """
-    Convert text to speech
-    """
-    try:
-        response = eleven.text_to_speech.convert(
-            text=request.message,
-            voice_id=Config.DEFAULT_VOICE_ID,
-            model_id=Config.TTS_MODEL,
-            output_format=Config.AUDIO_FORMAT
-        )
-        audio_bytes = b"".join(response)
-        return StreamingResponse(BytesIO(audio_bytes), media_type="audio/mpeg")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"TTS generation failed: {e}")
+# Text-to-speech endpoint removed
 
 # Additional medical endpoints
 @app.get("/medical/symptoms")
@@ -396,8 +257,6 @@ def health_check():
     return {
         "status": "healthy", 
         "services": [
-            "speech-to-text", 
-            "text-to-speech", 
             "medical-ai", 
             "knowledge-engine",
             "analytics"
