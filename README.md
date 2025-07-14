@@ -228,6 +228,33 @@ For production deployment:
 6. Examine the rate limiting for API call
 7. Evaluate the performance of the model by optimizing the efficiency
 
+## 🧪 Running Tests
+
+To run backend tests, use:
+
+```bash
+pytest
+```
+
+You can add your tests in the `backend/tests/` directory. Example tests should cover authentication, database models, and API endpoints.
+
+## 🔒 Security Best Practices
+
+- **Never commit real secrets or API keys.** Use a `.env` file for all sensitive information.
+- Set a strong, unique `SECRET_KEY` in your environment for JWT and cryptography.
+- Regularly update dependencies to patch vulnerabilities.
+- Use HTTPS in production to protect user data and enable microphone access.
+- Restrict CORS origins to trusted domains.
+- Consider rate limiting and monitoring for abuse.
+- Deactivate users by setting their `is_active` field to `False` (see User Management below).
+
+## 👤 User Management
+
+- Each user has an `is_active` field in the database.
+- To deactivate a user (prevent login and API access), set `is_active` to `False` in the database.
+- Inactive users will be denied access to protected resources by the backend.
+- You can manage users via direct database access or by building an admin interface.
+
 ## File Structure
 
 ```

@@ -7,16 +7,22 @@ This script sets up the database tables and creates initial data.
 import sys
 import os
 from pathlib import Path
+import argparse
+import logging
 
 # Add the backend directory to the Python path
 backend_path = Path(__file__).parent.parent / "backend"
-sys.path.insert(0, str(backend_path))
+if str(backend_path) not in sys.path:
+    sys.path.insert(0, str(backend_path))
 
-from database import init_db, engine, Base
-from models import User, Interaction, Subscription, SubscriptionType
-from auth import get_password_hash
-from sqlalchemy.orm import sessionmaker
-import logging
+try:
+    from database import init_db, engine, Base
+    from models import User, Interaction, Subscription, SubscriptionType
+    from auth import get_password_hash
+    from sqlalchemy.orm import sessionmaker
+except ImportError as e:
+    print(f"Error importing backend modules: {e}")
+    sys.exit(1)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -34,14 +40,12 @@ def create_sample_data():
     """Create sample data for testing."""
     Session = sessionmaker(bind=engine)
     session = Session()
-    
     try:
         # Check if sample user already exists
         existing_user = session.query(User).filter(User.email == "admin@medicalai.com").first()
         if existing_user:
             logger.info("Sample data already exists")
             return
-        
         # Create a sample admin user
         admin_user = User(
             email="admin@medicalai.com",
@@ -49,7 +53,6 @@ def create_sample_data():
             subscription_type=SubscriptionType.PRO
         )
         session.add(admin_user)
-        
         # Create a sample regular user
         regular_user = User(
             email="user@example.com",
@@ -57,13 +60,11 @@ def create_sample_data():
             subscription_type=SubscriptionType.FREE
         )
         session.add(regular_user)
-        
         session.commit()
         logger.info("Sample data created successfully")
         logger.info("Sample users created:")
         logger.info("  Admin: admin@medicalai.com / admin123")
         logger.info("  User: user@example.com / user123")
-        
     except Exception as e:
         session.rollback()
         logger.error(f"Error creating sample data: {e}")
@@ -72,18 +73,23 @@ def create_sample_data():
         session.close()
 
 def main():
-    """Main function to initialize the database."""
+    """
+    Main function to initialize the database. Supports optional sample data creation via CLI.
+    """
+    parser = argparse.ArgumentParser(description="Initialize the Medical AI Assistant database.")
+    parser.add_argument(
+        "--with-sample-data",
+        action="store_true",
+        help="Create sample data (admin and regular user) after initializing tables."
+    )
+    args = parser.parse_args()
+
     logger.info("Starting database initialization...")
-    
     try:
-        # Create tables
         create_tables()
-        
-        # Create sample data
-        create_sample_data()
-        
+        if args.with_sample_data:
+            create_sample_data()
         logger.info("Database initialization completed successfully!")
-        
     except Exception as e:
         logger.error(f"Database initialization failed: {e}")
         sys.exit(1)

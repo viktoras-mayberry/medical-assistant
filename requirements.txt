@@ -18,7 +18,6 @@ alembic==1.13.1
 # Authentication dependencies
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
-python-multipart==0.0.6
 
 # Payment processing
 stripe==7.8.0
@@ -26,3 +25,9 @@ stripe==7.8.0
 # Additional utilities
 email-validator==2.1.0
 requests==2.31.0
+
+# Testing dependencies
+pytest==7.4.3
+httpx==0.25.2
+
+# NOTE: Do not put secrets or API keys in this file. Use a .env file for sensitive information.
