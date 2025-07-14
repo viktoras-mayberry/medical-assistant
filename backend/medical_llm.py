@@ -18,13 +18,22 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class MedicalResponse:
-    """Structure for medical AI responses"""
+    """Enhanced structure for medical AI responses"""
     response: str
-    confidence: float
+    confidence_score: float
+    risk_level: str
+    is_emergency: bool
+    sources: List[str]
+    recommendations: List[str]
     medical_disclaimer: str
     requires_professional_consultation: bool
     category: str
     timestamp: datetime
+    
+    # Legacy compatibility
+    @property
+    def confidence(self) -> float:
+        return self.confidence_score
 
 class MedicalLLMClient:
     """Advanced Medical LLM Client with OpenAI and local model integration"""
@@ -129,7 +138,17 @@ Guidelines:
 
 Remember: You are providing information, not medical diagnosis or treatment."""
     
-    async def query_medical_llm(self, user_query: str) -> MedicalResponse:
+    async def process_query(self, 
+                           query: str, 
+                           patient_id: Optional[str] = None,
+                           context: Dict[str, Any] = None) -> 'MedicalResponse':
+        """Enhanced query processing with context awareness"""
+        return await self.query_medical_llm(query, patient_id, context)
+    
+    async def query_medical_llm(self, 
+                               user_query: str, 
+                               patient_id: Optional[str] = None,
+                               context: Dict[str, Any] = None) -> MedicalResponse:
         """Query the medical LLM with user input"""
         try:
             # Classify the query
@@ -140,7 +159,11 @@ Remember: You are providing information, not medical diagnosis or treatment."""
             if is_emergency:
                 return MedicalResponse(
                     response=f"🚨 This appears to be a medical emergency. Please call emergency services immediately (911 in the US) or go to the nearest emergency room. Do not delay seeking immediate medical attention.\n\n{self.medical_disclaimer}",
-                    confidence=1.0,
+                    confidence_score=1.0,
+                    risk_level="critical",
+                    is_emergency=True,
+                    sources=["Emergency medical protocols"],
+                    recommendations=["Call 911 immediately", "Go to nearest emergency room", "Do not delay medical attention"],
                     medical_disclaimer=self.medical_disclaimer,
                     requires_professional_consultation=True,
                     category="emergency",
@@ -158,9 +181,18 @@ Remember: You are providing information, not medical diagnosis or treatment."""
             # Add medical disclaimer
             response_with_disclaimer = f"{response}\n\n{self.medical_disclaimer}"
             
+            # Determine risk level and recommendations
+            risk_level = "moderate" if category in ["symptoms", "conditions"] else "low"
+            sources = ["Medical knowledge base", "AI medical assistant"]
+            recommendations = self._get_recommendations(category)
+            
             return MedicalResponse(
                 response=response_with_disclaimer,
-                confidence=0.8,
+                confidence_score=0.8,
+                risk_level=risk_level,
+                is_emergency=False,
+                sources=sources,
+                recommendations=recommendations,
                 medical_disclaimer=self.medical_disclaimer,
                 requires_professional_consultation=category in ["symptoms", "conditions", "emergency"],
                 category=category,
@@ -171,7 +203,11 @@ Remember: You are providing information, not medical diagnosis or treatment."""
             logger.error(f"Error in medical LLM query: {e}")
             return MedicalResponse(
                 response=f"I apologize, but I'm having trouble processing your medical query right now. Please consult with a healthcare professional for medical concerns.\n\n{self.medical_disclaimer}",
-                confidence=0.0,
+                confidence_score=0.0,
+                risk_level="unknown",
+                is_emergency=False,
+                sources=["System error"],
+                recommendations=["Consult healthcare professional", "Try again later"],
                 medical_disclaimer=self.medical_disclaimer,
                 requires_professional_consultation=True,
                 category="error",
@@ -297,6 +333,49 @@ Remember: You are providing information, not medical diagnosis or treatment."""
         except Exception as e:
             logger.error(f"Fine-tuning error: {e}")
             return False
+    
+    def _get_recommendations(self, category: str) -> List[str]:
+        """Get category-specific recommendations"""
+        recommendations = {
+            "symptoms": [
+                "Monitor symptoms closely",
+                "Keep a symptom diary",
+                "Stay hydrated and rest",
+                "Consult healthcare provider if symptoms worsen"
+            ],
+            "medications": [
+                "Take as prescribed by healthcare provider",
+                "Check for drug interactions",
+                "Store medications properly",
+                "Consult pharmacist for questions"
+            ],
+            "conditions": [
+                "Follow treatment plan",
+                "Regular medical check-ups",
+                "Maintain healthy lifestyle",
+                "Stay informed about your condition"
+            ],
+            "treatments": [
+                "Discuss options with healthcare provider",
+                "Understand risks and benefits",
+                "Follow post-treatment instructions",
+                "Monitor for side effects"
+            ],
+            "prevention": [
+                "Maintain regular exercise",
+                "Follow healthy diet",
+                "Get recommended screenings",
+                "Practice good hygiene"
+            ],
+            "general": [
+                "Maintain regular healthcare visits",
+                "Stay informed about health topics",
+                "Practice preventive care",
+                "Ask questions during medical visits"
+            ]
+        }
+        
+        return recommendations.get(category, recommendations["general"])
     
     def _get_mock_response(self, query: str, category: str) -> str:
         """Generate mock medical responses for testing"""
