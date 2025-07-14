@@ -1,0 +1,72 @@
+[
+  {
+    "input": "What is a headache?",
+    "output": "A headache is pain or discomfort in the head or upper neck area. Common types include tension headaches (most common, caused by stress or muscle tension), migraines (severe, often with nausea and light sensitivity), and cluster headaches (severe, occurring in cycles). Causes can include stress, dehydration, lack of sleep, eye strain, sinus issues, or underlying medical conditions. For mild headaches, try rest, hydration, and over-the-counter pain relievers. Seek medical attention if headaches are severe, sudden, persistent, or accompanied by fever, vision changes, or neurological symptoms.",
+    "intent": "symptom_inquiry",
+    "category": "symptoms",
+    "risk_level": "low"
+  },
+  {
+    "input": "I have chest pain",
+    "output": "Chest pain requires immediate attention. If you're experiencing severe, crushing, or persistent chest pain, especially with shortness of breath, sweating, nausea, or pain radiating to arm/jaw, call 911 immediately as this could indicate a heart attack. Other causes include muscle strain, acid reflux, anxiety, or lung issues. Even mild chest pain should be evaluated by a healthcare professional promptly. Do not ignore chest pain - seek medical evaluation.",
+    "intent": "symptom_report",
+    "category": "emergency",
+    "risk_level": "critical"
+  },
+  {
+    "input": "What are the symptoms of diabetes?",
+    "output": "Common symptoms of diabetes include excessive thirst (polydipsia), frequent urination (polyuria), unexplained weight loss, increased hunger, fatigue, blurred vision, slow-healing wounds, frequent infections, and tingling in hands or feet. Type 1 diabetes symptoms often develop quickly, while Type 2 symptoms develop gradually. If you experience these symptoms, especially multiple ones together, consult a healthcare provider for proper testing and diagnosis.",
+    "intent": "condition_inquiry",
+    "category": "conditions",
+    "risk_level": "moderate"
+  },
+  {
+    "input": "How do I prevent heart disease?",
+    "output": "Heart disease prevention includes: maintaining a healthy diet rich in fruits, vegetables, whole grains, and lean proteins while limiting saturated fats, sodium, and added sugars; exercising regularly (at least 150 minutes of moderate activity weekly); not smoking and avoiding secondhand smoke; maintaining healthy weight; managing stress through relaxation techniques; limiting alcohol consumption; controlling blood pressure, cholesterol, and diabetes; getting adequate sleep (7-9 hours); and having regular check-ups with your healthcare provider.",
+    "intent": "prevention_inquiry",
+    "category": "prevention",
+    "risk_level": "low"
+  },
+  {
+    "input": "What medications help with high blood pressure?",
+    "output": "Common blood pressure medications include ACE inhibitors (like lisinopril), ARBs (like losartan), beta-blockers (like metoprolol), calcium channel blockers (like amlodipine), and diuretics (like hydrochlorothiazide). The choice depends on individual factors, other health conditions, and how you respond to treatment. Medication should always be prescribed and monitored by a healthcare provider. Never start, stop, or change blood pressure medications without medical supervision.",
+    "intent": "medication_inquiry",
+    "category": "medications",
+    "risk_level": "moderate"
+  },
+  {
+    "input": "I'm having trouble breathing",
+    "output": "Difficulty breathing can be a medical emergency. If you're experiencing severe shortness of breath, inability to speak in full sentences, blue lips or fingernails, or chest pain, call 911 immediately. Other causes include asthma, allergies, infections, anxiety, or heart problems. Even mild breathing difficulties should be evaluated by a healthcare professional. Don't wait - seek medical attention if you're concerned about your breathing.",
+    "intent": "symptom_report",
+    "category": "emergency",
+    "risk_level": "critical"
+  },
+  {
+    "input": "What is normal blood pressure?",
+    "output": "Normal blood pressure is less than 120/80 mmHg. Blood pressure categories are: Normal (less than 120/80), Elevated (120-129 systolic and less than 80 diastolic), Stage 1 High Blood Pressure (130-139 systolic or 80-89 diastolic), Stage 2 High Blood Pressure (140/90 or higher), and Hypertensive Crisis (higher than 180/120 - requires immediate medical attention). Blood pressure can vary throughout the day, so multiple readings are needed for diagnosis.",
+    "intent": "health_metric_inquiry",
+    "category": "general",
+    "risk_level": "low"
+  },
+  {
+    "input": "How much water should I drink daily?",
+    "output": "General recommendations suggest about 8 glasses (64 ounces) of water daily, but individual needs vary based on activity level, climate, overall health, and body size. A more personalized approach is to drink when thirsty and monitor urine color - pale yellow indicates good hydration. Increase intake during exercise, hot weather, illness, or pregnancy. Foods with high water content also contribute to hydration. Consult your healthcare provider if you have specific medical conditions affecting fluid intake.",
+    "intent": "health_guidance",
+    "category": "prevention",
+    "risk_level": "low"
+  },
+  {
+    "input": "What are the side effects of aspirin?",
+    "output": "Common aspirin side effects include stomach irritation, heartburn, nausea, and increased bleeding risk. Serious side effects can include stomach ulcers, bleeding problems, allergic reactions, and ringing in ears (tinnitus). Aspirin can interact with other medications like blood thinners. Take with food to reduce stomach irritation. Don't give aspirin to children under 18 due to Reye's syndrome risk. Always consult your healthcare provider or pharmacist about potential side effects and interactions.",
+    "intent": "medication_inquiry",
+    "category": "medications",
+    "risk_level": "moderate"
+  },
+  {
+    "input": "I feel dizzy and nauseous",
+    "output": "Dizziness and nausea can have various causes including dehydration, low blood sugar, inner ear problems, motion sickness, medications, infections, or more serious conditions. If accompanied by severe headache, chest pain, difficulty breathing, confusion, or fainting, seek immediate medical attention. For mild symptoms, try sitting or lying down, staying hydrated, and avoiding sudden movements. If symptoms persist or worsen, consult a healthcare provider.",
+    "intent": "symptom_report",
+    "category": "symptoms",
+    "risk_level": "moderate"
+  }
+]
