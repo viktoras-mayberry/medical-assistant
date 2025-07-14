@@ -14,6 +14,7 @@ from fastapi import FastAPI, HTTPException, File, UploadFile, Depends, Backgroun
 from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, Field, validator
 from elevenlabs.client import ElevenLabs
 import speech_recognition as sr
@@ -25,6 +26,11 @@ from config import Config
 from medical_llm import MedicalLLMClient, MedicalResponse
 from medical_knowledge import MedicalKnowledgeEngine
 from medical_analytics import MedicalAnalytics
+from database import init_db, get_db
+from auth import authenticate_user, create_access_token, get_current_active_user, get_password_hash
+from schemas import Token, UserCreate, UserResponse, LoginRequest, UserUpdate, InteractionCreate, SubscriptionCreate, SubscriptionUpdate
+from models import User
+from fastapi import status
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -45,7 +51,7 @@ medical_analytics = MedicalAnalytics()
 app = FastAPI(
     title="Medical Chat AI Assistant",
     description="A voice-enabled medical assistant powered by AI",
-    version="1.0.0"
+    version="2.0.0"
 )
 
 # Add CORS middleware
@@ -56,6 +62,49 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+# Initialize database
+init_db()
+
+@app.post("/auth/register", response_model=UserResponse)
+def register(user_create: UserCreate, db: Session = Depends(get_db)):
+    """
+    Register new user.
+    """
+    user = db.query(User).filter(User.email == user_create.email).first()
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="Email already registered.",
+        )
+    
+    hashed_password = get_password_hash(user_create.password)
+    user = User(email=user_create.email, password_hash=hashed_password)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+@app.post("/auth/login", response_model=Token)
+def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    """
+    Login user and return access token.
+    """
+    user = authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Incorrect username or password",
+        )
+    access_token = create_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer"}
+
+@app.get("/users/me", response_model=UserResponse)
+def read_users_me(current_user: User = Depends(get_current_active_user)):
+    """
+    Get current user detail.
+    """
+    return current_user
 
 class ChatRequest(BaseModel):
     message: str
