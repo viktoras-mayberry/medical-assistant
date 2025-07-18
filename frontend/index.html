@@ -3,29 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Medical AI Assistant</title>
+    <title>Open-Source Medical AI Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #06b6d4;
-            --accent-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --success-color: #22c55e;
-            --background-color: #f8fafc;
-            --surface-color: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --text-muted: #94a3b8;
-            --border-color: #e2e8f0;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -33,754 +13,809 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: var(--text-primary);
-            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .header {
-            background: var(--surface-color);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-lg);
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            margin-bottom: 32px;
         }
 
         .header h1 {
+            color: #2d3748;
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--text-primary);
             margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(45deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .header p {
+            color: #4a5568;
             font-size: 1.1rem;
-            color: var(--text-secondary);
             margin-bottom: 16px;
         }
 
-        .header .features {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .feature-badge {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #48bb78, #38a169);
             color: white;
-            padding: 8px 16px;
+            padding: 6px 16px;
             border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 24px;
-            flex: 1;
-        }
-
-        .chat-section {
-            background: var(--surface-color);
+        .system-info {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            padding: 20px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
         }
 
-        .chat-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 20px 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .chat-header h2 {
-            font-size: 1.25rem;
+        .system-info h3 {
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
             font-weight: 600;
         }
 
-        .chat-messages {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-            background: var(--background-color);
-            min-height: 400px;
-            max-height: 500px;
+        .system-info ul {
+            list-style: none;
+            padding: 0;
         }
 
-        .message {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .message.user {
-            flex-direction: row-reverse;
-        }
-
-        .message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .system-info li {
+            padding: 6px 0;
+            color: #4a5568;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.125rem;
+        }
+
+        .system-info .status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 12px;
             flex-shrink: 0;
         }
 
-        .message.ai .message-avatar {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
+        .system-info .status.online {
+            background: #48bb78;
+            box-shadow: 0 0 0 2px rgba(72, 187, 120, 0.3);
         }
 
-        .message.user .message-avatar {
-            background: linear-gradient(135deg, var(--accent-color), var(--success-color));
-            color: white;
+        .system-info .status.offline {
+            background: #f56565;
+            box-shadow: 0 0 0 2px rgba(245, 101, 101, 0.3);
         }
 
-        .message-content {
-            max-width: 70%;
-            padding: 16px 20px;
+        .chat-container {
+            margin-bottom: 32px;
+        }
+
+        .messages {
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid #e2e8f0;
             border-radius: 16px;
-            position: relative;
-            word-wrap: break-word;
+            padding: 20px;
+            background: #f8fafc;
+            margin-bottom: 20px;
+            scroll-behavior: smooth;
         }
 
-        .message.ai .message-content {
-            background: var(--surface-color);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-color);
-        }
-
-        .message.user .message-content {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .message.user .message-time {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .chat-input-container {
-            padding: 24px;
-            background: var(--surface-color);
-            border-top: 1px solid var(--border-color);
-        }
-
-        .chat-input-wrapper {
-            display: flex;
-            gap: 12px;
-            align-items: flex-end;
-        }
-
-        .input-container {
-            flex: 1;
-            position: relative;
-        }
-
-        .chat-input {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: inherit;
-            outline: none;
-            resize: none;
-            transition: border-color 0.2s;
-            background: var(--background-color);
-        }
-
-        .chat-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .send-button {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 16px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .send-button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .send-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .voice-button {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.125rem;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .voice-button:hover {
-            background: var(--success-color);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .voice-button.recording {
-            background: var(--danger-color);
-            animation: pulse 2s infinite;
-        }
-
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .sidebar-section {
-            background: var(--surface-color);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .sidebar-section h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary);
+        .message {
             margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            max-width: 85%;
+            word-wrap: break-word;
+            line-height: 1.5;
+            font-size: 0.95rem;
         }
 
-        .quick-actions {
-            display: grid;
-            gap: 12px;
-        }
-
-        .quick-action {
-            background: var(--background-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.875rem;
-            text-align: left;
-        }
-
-        .quick-action:hover {
-            border-color: var(--primary-color);
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        .user-message {
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
+            margin-left: auto;
+            text-align: right;
         }
 
-        .health-tips {
-            list-style: none;
+        .bot-message {
+            background: white;
+            color: #2d3748;
+            margin-right: auto;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .health-tips li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.875rem;
-            color: var(--text-secondary);
+        .message .risk-level {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 12px;
         }
 
-        .health-tips li:last-child {
-            border-bottom: none;
+        .message .risk-level.low {
+            background: #c6f6d5;
+            color: #22543d;
         }
 
-        .status-bar {
-            background: var(--surface-color);
-            border-radius: 12px;
-            padding: 12px 20px;
-            margin-top: 16px;
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
+        .message .risk-level.moderate {
+            background: #fef5e7;
+            color: #c05621;
         }
 
-        .status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success-color);
+        .message .risk-level.high {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .message .risk-level.critical {
+            background: #fc8181;
+            color: white;
             animation: pulse 2s infinite;
         }
 
-        .loading-indicator {
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .loading-indicator.active {
-            display: flex;
-        }
-
-        .loading-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .loading-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            animation: loading 1.4s infinite ease-in-out;
-        }
-
-        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
-        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        @keyframes loading {
-            0%, 80%, 100% {
-                transform: scale(0);
-            }
-            40% {
-                transform: scale(1);
-            }
-        }
-
-        .disclaimer {
-            background: linear-gradient(135deg, var(--warning-color), #fb923c);
+        .emergency-warning {
+            background: linear-gradient(45deg, #fc8181, #f56565);
             color: white;
-            padding: 16px;
+            border: 2px solid #e53e3e;
+            padding: 12px 16px;
             border-radius: 12px;
-            margin-top: 16px;
-            font-size: 0.875rem;
+            margin: 12px 0;
+            font-weight: 600;
+            animation: pulse 2s infinite;
             text-align: center;
         }
 
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .input-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        #messageInput:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 16px 24px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #4a5568;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #2d3748;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: #ed8936;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #dd6b20;
+            transform: translateY(-2px);
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .status.recording {
+            background: #fef5e7;
+            color: #c05621;
+            border: 1px solid #f6ad55;
+        }
+
+        .status.processing {
+            background: #e6fffa;
+            color: #234e52;
+            border: 1px solid #4fd1c7;
+        }
+
+        .status.error {
+            background: #fed7d7;
+            color: #c53030;
+            border: 1px solid #fc8181;
+        }
+
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #68d391;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .record-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(45deg, #e53e3e, #c53030);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+        }
+
+        .record-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(229, 62, 62, 0.4);
+        }
+
+        .record-btn.recording {
+            background: linear-gradient(45deg, #ed8936, #dd6b20);
+            animation: pulse 1s infinite;
+        }
+
+        .disclaimer {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: #742a2a;
+            line-height: 1.6;
+        }
+
+        .disclaimer strong {
+            color: #c53030;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .feature-item {
+            background: #f0f8ff;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #bee3f8;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .recommendations {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .recommendations h4 {
+            color: #22543d;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .recommendations ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .recommendations li {
+            margin-bottom: 4px;
+            color: #2f855a;
+        }
+
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                gap: 16px;
+            .container {
+                padding: 20px;
+                margin: 10px;
             }
             
             .header h1 {
                 font-size: 2rem;
             }
             
-            .header .features {
-                gap: 12px;
+            .messages {
+                height: 300px;
             }
             
-            .feature-badge {
-                font-size: 0.75rem;
-                padding: 6px 12px;
+            .input-container {
+                flex-direction: column;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <header class="header">
-            <h1><i class="fas fa-stethoscope"></i> Advanced Medical AI Assistant</h1>
-            <p>Your comprehensive medical knowledge companion powered by advanced AI</p>
-            <div class="features">
-                <span class="feature-badge">
-                    <i class="fas fa-brain"></i>
-                    Advanced Medical Knowledge
-                </span>
-                <span class="feature-badge">
-                    <i class="fas fa-microphone"></i>
-                    Voice Interaction
-                </span>
-                <span class="feature-badge">
-                    <i class="fas fa-shield-alt"></i>
-                    Emergency Detection
-                </span>
-                <span class="feature-badge">
-                    <i class="fas fa-user-md"></i>
-                    Professional Guidance
-                </span>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Medical AI Assistant</h1>
+            <p>Open-Source Medical AI System</p>
+            <span class="badge">🔓 No API Keys Required</span>
+        </div>
+
+        <div id="systemInfo" class="system-info">
+            <h3>🛠️ System Status</h3>
+            <div class="loading"></div> Loading system information...
+        </div>
+
+        <div class="chat-container">
+            <div id="messages" class="messages">
+                <div class="message bot-message">
+                    👋 <strong>Welcome to your Open-Source Medical AI Assistant!</strong>
+                    <br><br>
+                    I can help you with:
+                    <div class="feature-grid">
+                        <div class="feature-item">🏥 General health information</div>
+                        <div class="feature-item">📋 Symptom guidance</div>
+                        <div class="feature-item">💊 Medication information</div>
+                        <div class="feature-item">🏃‍♂️ Wellness tips</div>
+                        <div class="feature-item">🎙️ Voice interactions</div>
+                        <div class="feature-item">🔬 Medical research</div>
+                    </div>
+                    <br>
+                    <strong>✨ Features:</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>🔓 Completely open-source</li>
+                        <li>🖥️ Runs locally on your device</li>
+                        <li>🔒 Your data stays private</li>
+                        <li>⚡ No subscription fees</li>
+                        <li>🧠 Multiple AI models available</li>
+                    </ul>
+                    <br>
+                    <strong>🚨 Important:</strong> For medical emergencies, call 911 immediately!
+                </div>
             </div>
-        </header>
 
-        <main class="main-content">
-            <section class="chat-section">
-                <div class="chat-header">
-                    <i class="fas fa-comments"></i>
-                    <h2>Medical Consultation</h2>
-                </div>
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message ai">
-                        <div class="message-avatar">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <div class="message-content">
-                            <p>Hello! I'm your advanced medical AI assistant. I have comprehensive knowledge of medical conditions, treatments, medications, and can help with a wide range of health-related questions. How can I assist you today?</p>
-                            <div class="message-time">Just now</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat-input-container">
-                    <div class="chat-input-wrapper">
-                        <button class="voice-button" id="voiceButton" title="Voice Input">
-                            <i class="fas fa-microphone"></i>
-                        </button>
-                        <div class="input-container">
-                            <textarea class="chat-input" id="chatInput" placeholder="Ask me anything about health, symptoms, treatments, medications..." rows="1"></textarea>
-                        </div>
-                        <button class="send-button" id="sendButton">
-                            <i class="fas fa-paper-plane"></i>
-                            Send
-                        </button>
-                    </div>
-                    <div class="loading-indicator" id="loadingIndicator">
-                        <div class="loading-dots">
-                            <div class="loading-dot"></div>
-                            <div class="loading-dot"></div>
-                            <div class="loading-dot"></div>
-                        </div>
-                        <span>Processing your medical query...</span>
-                    </div>
-                </div>
-            </section>
+            <div id="status" class="status hidden"></div>
 
-            <aside class="sidebar">
-                <div class="sidebar-section">
-                    <h3>
-                        <i class="fas fa-bolt"></i>
-                        Quick Actions
-                    </h3>
-                    <div class="quick-actions">
-                        <button class="quick-action" onclick="sendQuickMessage('What are the symptoms of COVID-19?')">
-                            COVID-19 Symptoms
-                        </button>
-                        <button class="quick-action" onclick="sendQuickMessage('How do I treat a fever?')">
-                            Fever Treatment
-                        </button>
-                        <button class="quick-action" onclick="sendQuickMessage('What medications interact with blood pressure drugs?')">
-                            Drug Interactions
-                        </button>
-                        <button class="quick-action" onclick="sendQuickMessage('When should I see a doctor for chest pain?')">
-                            Emergency Symptoms
-                        </button>
-                        <button class="quick-action" onclick="sendQuickMessage('Explain diabetes management')">
-                            Diabetes Management
-                        </button>
-                    </div>
-                </div>
+            <div class="input-container">
+                <input type="text" id="messageInput" placeholder="Ask me anything about health and medicine..." />
+                <button class="btn btn-primary" onclick="sendMessage()">
+                    <span>💬</span> Send
+                </button>
+            </div>
 
-                <div class="sidebar-section">
-                    <h3>
-                        <i class="fas fa-heart"></i>
-                        Health Tips
-                    </h3>
-                    <ul class="health-tips">
-                        <li>Stay hydrated with 8-10 glasses of water daily</li>
-                        <li>Exercise regularly for at least 30 minutes</li>
-                        <li>Get 7-9 hours of quality sleep</li>
-                        <li>Eat a balanced diet rich in fruits and vegetables</li>
-                        <li>Schedule regular health checkups</li>
-                        <li>Manage stress through meditation or yoga</li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <h3>
-                        <i class="fas fa-phone"></i>
-                        Emergency Contacts
-                    </h3>
-                    <ul class="health-tips">
-                        <li><strong>Emergency Services:</strong> 911</li>
-                        <li><strong>Poison Control:</strong> 1-800-222-1222</li>
-                        <li><strong>Crisis Text Line:</strong> Text HOME to 741741</li>
-                        <li><strong>Suicide Prevention:</strong> 988</li>
-                    </ul>
-                </div>
-            </aside>
-        </main>
-
-        <div class="status-bar">
-            <div class="status-indicator"></div>
-            <span id="statusText">Ready to assist with your medical questions</span>
+            <div class="controls">
+                <button id="recordBtn" class="record-btn" onclick="toggleRecording()" title="Voice Message">
+                    🎤
+                </button>
+                <button class="btn btn-secondary" onclick="clearChat()">
+                    🗑️ Clear
+                </button>
+                <button class="btn btn-success" onclick="loadSystemInfo()">
+                    🔄 Refresh
+                </button>
+                <button class="btn btn-warning" onclick="showModels()">
+                    🤖 Models
+                </button>
+            </div>
         </div>
 
         <div class="disclaimer">
-            <i class="fas fa-exclamation-triangle"></i>
-            <strong>Medical Disclaimer:</strong> This AI assistant provides educational information only. 
-            Always consult qualified healthcare professionals for medical advice, diagnosis, or treatment.
+            <strong>⚠️ Medical Disclaimer:</strong> This AI assistant provides general health information for educational purposes only. It uses open-source language models and should not replace professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare professionals for medical concerns.
         </div>
     </div>
 
     <script>
-        const API_BASE = 'http://127.0.0.1:8000';
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const sendButton = document.getElementById('sendButton');
-        const voiceButton = document.getElementById('voiceButton');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const statusText = document.getElementById('statusText');
-
         let isRecording = false;
         let mediaRecorder;
-        let audioChunks = [];
+        let recordedChunks = [];
+        let systemInfo = null;
+        const API_BASE_URL = 'http://localhost:8000';
 
-        // Auto-resize textarea
-        chatInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('messageInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Load system information
+            loadSystemInfo();
         });
 
-        // Send message on Enter (Shift+Enter for new line)
-        chatInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
+        async function loadSystemInfo() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/models/system-info`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                systemInfo = data;
+                
+                const systemInfoDiv = document.getElementById('systemInfo');
+                systemInfoDiv.innerHTML = `
+                    <h3>🛠️ System Status</h3>
+                    <ul>
+                        <li><span class="status ${data.llm_info.is_loaded ? 'online' : 'offline'}"></span> 
+                            <strong>LLM Model:</strong> ${data.llm_info.model_name}</li>
+                        <li><span class="status ${data.voice_info.whisper_available ? 'online' : 'offline'}"></span> 
+                            <strong>Voice Recognition:</strong> ${data.voice_info.whisper_available ? 'Whisper (' + data.voice_info.current_whisper_model + ')' : 'Unavailable'}</li>
+                        <li><span class="status ${data.voice_info.gtts_available ? 'online' : 'offline'}"></span> 
+                            <strong>Text-to-Speech:</strong> ${data.voice_info.gtts_available ? 'gTTS' : 'Unavailable'}</li>
+                        <li><span class="status ${data.knowledge_base_available ? 'online' : 'offline'}"></span> 
+                            <strong>Knowledge Base:</strong> ${data.knowledge_base_available ? 'Available' : 'Unavailable'}</li>
+                        <li><span class="status ${data.voice_info.torch_available ? 'online' : 'offline'}"></span> 
+                            <strong>GPU Acceleration:</strong> ${data.voice_info.torch_available ? 'Available (' + data.voice_info.gpu_count + ' GPUs)' : 'CPU Only'}</li>
+                    </ul>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading system info:', error);
+                const systemInfoDiv = document.getElementById('systemInfo');
+                systemInfoDiv.innerHTML = `
+                    <h3>🛠️ System Status</h3>
+                    <p style="color: #c53030;">❌ Unable to connect to backend. Please ensure the server is running on port 8000.</p>
+                    <p style="color: #4a5568; margin-top: 8px;">Run: <code>uvicorn backend.main:app --reload</code></p>
+                `;
             }
-        });
+        }
 
-        // Send button click
-        sendButton.addEventListener('click', sendMessage);
+        async function showModels() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/models/available`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                let modelInfo = '<strong>🤖 Available Models:</strong><br><br>';
+                
+                modelInfo += '<strong>LLM Models:</strong><br>';
+                for (const [key, value] of Object.entries(data.llm_models)) {
+                    modelInfo += `• ${value.name} (${value.memory_gb}GB) - ${value.description}<br>`;
+                }
+                
+                modelInfo += '<br><strong>Voice Models:</strong><br>';
+                for (const [key, value] of Object.entries(data.voice_models.whisper)) {
+                    modelInfo += `• Whisper ${key} - ${value.size}, ${value.speed} speed, ${value.accuracy} accuracy<br>`;
+                }
+                
+                modelInfo += '<br><strong>Current Configuration:</strong><br>';
+                modelInfo += `• LLM: ${data.current_llm.model_name}<br>`;
+                modelInfo += `• Voice: ${data.voice_models.current_model}<br>`;
+                
+                addMessage(modelInfo);
+                
+            } catch (error) {
+                console.error('Error loading models:', error);
+                addMessage('❌ Could not load model information.');
+            }
+        }
 
-        // Voice button functionality
-        voiceButton.addEventListener('mousedown', startRecording);
-        voiceButton.addEventListener('mouseup', stopRecording);
-        voiceButton.addEventListener('mouseleave', stopRecording);
+        function showStatus(message, type = 'processing') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = type === 'processing' ? 
+                `<div class="loading"></div> ${message}` : message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.classList.remove('hidden');
+        }
+
+        function hideStatus() {
+            document.getElementById('status').classList.add('hidden');
+        }
+
+        function addMessage(message, isUser = false, data = null) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            let messageContent = message;
+            
+            if (!isUser && data) {
+                // Add emergency warning
+                if (data.is_emergency) {
+                    messageContent = `<div class="emergency-warning">🚨 MEDICAL EMERGENCY DETECTED</div>${messageContent}`;
+                }
+                
+                // Add risk level
+                if (data.risk_level && data.risk_level !== 'low') {
+                    messageContent += `<div class="risk-level ${data.risk_level}">Risk Level: ${data.risk_level}</div>`;
+                }
+                
+                // Add recommendations
+                if (data.recommendations && data.recommendations.length > 0) {
+                    messageContent += '<div class="recommendations">';
+                    messageContent += '<h4>📋 Recommendations:</h4><ul>';
+                    data.recommendations.forEach(rec => {
+                        messageContent += `<li>${rec}</li>`;
+                    });
+                    messageContent += '</ul></div>';
+                }
+                
+                // Add metadata
+                const metadata = [];
+                if (data.confidence_score) {
+                    const confidence = Math.round(data.confidence_score * 100);
+                    metadata.push(`🎯 Confidence: ${confidence}%`);
+                }
+                if (data.sources && data.sources.length > 0) {
+                    metadata.push(`📚 Sources: ${data.sources.join(', ')}`);
+                }
+                
+                if (metadata.length > 0) {
+                    messageContent += `<br><br><small>${metadata.join(' • ')}</small>`;
+                }
+            }
+            
+            messageDiv.innerHTML = messageContent;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
 
         async function sendMessage() {
-            const message = chatInput.value.trim();
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
             if (!message) return;
-
-            addMessage('user', message);
-            chatInput.value = '';
-            chatInput.style.height = 'auto';
-            setLoading(true);
-
+            
+            // Add user message
+            addMessage(message, true);
+            input.value = '';
+            
+            showStatus('🤖 Processing your medical question...');
+            
             try {
-                const response = await fetch(`${API_BASE}/chat`, {
+                const response = await fetch(`${API_BASE_URL}/chat`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message }),
+                    body: JSON.stringify({ message: message })
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    addMessage('ai', data.response);
-                    updateStatus('Ready to assist with your medical questions');
-                } else {
-                    throw new Error('Failed to get response');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                
+                const data = await response.json();
+                addMessage(data.response, false, data);
+                
             } catch (error) {
-                console.error('Error:', error);
-                addMessage('ai', 'I apologize, but I\'m having trouble processing your request. Please try again.');
-                updateStatus('Error occurred - please try again');
-            } finally {
-                setLoading(false);
+                console.error('Error sending message:', error);
+                addMessage(`❌ Sorry, I'm having trouble processing your request. Please ensure the backend server is running and try again.`);
+                showStatus('Connection error', 'error');
+                setTimeout(hideStatus, 3000);
+                return;
             }
+            
+            hideStatus();
         }
 
-        function sendQuickMessage(message) {
-            chatInput.value = message;
-            sendMessage();
-        }
-
-        function addMessage(sender, text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
+        async function toggleRecording() {
+            const recordBtn = document.getElementById('recordBtn');
             
-            const avatar = document.createElement('div');
-            avatar.className = 'message-avatar';
-            avatar.innerHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-user-md"></i>';
-            
-            const content = document.createElement('div');
-            content.className = 'message-content';
-            
-            const messageText = document.createElement('p');
-            messageText.textContent = text;
-            
-            const time = document.createElement('div');
-            time.className = 'message-time';
-            time.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            content.appendChild(messageText);
-            content.appendChild(time);
-            messageDiv.appendChild(avatar);
-            messageDiv.appendChild(content);
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function setLoading(loading) {
-            loadingIndicator.classList.toggle('active', loading);
-            sendButton.disabled = loading;
-            if (loading) {
-                updateStatus('Processing your medical query...');
+            if (!systemInfo || !systemInfo.voice_info.whisper_available) {
+                showStatus('❌ Voice recognition not available', 'error');
+                setTimeout(hideStatus, 3000);
+                return;
             }
-        }
-
-        function updateStatus(message) {
-            statusText.textContent = message;
-        }
-
-        // Voice recording functionality
-        async function startRecording() {
-            if (isRecording) return;
-
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-
-                mediaRecorder.ondataavailable = (event) => {
-                    audioChunks.push(event.data);
-                };
-
-                mediaRecorder.onstop = async () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    await sendVoiceMessage(audioBlob);
-                    stream.getTracks().forEach(track => track.stop());
-                };
-
-                mediaRecorder.start();
-                isRecording = true;
-                voiceButton.classList.add('recording');
-                voiceButton.innerHTML = '<i class="fas fa-stop"></i>';
-                updateStatus('Recording... Release to send');
-            } catch (error) {
-                console.error('Error accessing microphone:', error);
-                updateStatus('Microphone access denied');
+            
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    
+                    mediaRecorder = new MediaRecorder(stream);
+                    recordedChunks = [];
+                    
+                    mediaRecorder.ondataavailable = function(event) {
+                        if (event.data.size > 0) {
+                            recordedChunks.push(event.data);
+                        }
+                    };
+                    
+                    mediaRecorder.onstop = function() {
+                        const blob = new Blob(recordedChunks, { type: 'audio/wav' });
+                        sendVoiceMessage(blob);
+                        
+                        // Stop all tracks
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+                    
+                    mediaRecorder.start();
+                    isRecording = true;
+                    recordBtn.classList.add('recording');
+                    recordBtn.innerHTML = '⏹️';
+                    showStatus('🎤 Recording... Click to stop', 'recording');
+                    
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    showStatus('❌ Microphone access denied', 'error');
+                    setTimeout(hideStatus, 3000);
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                recordBtn.classList.remove('recording');
+                recordBtn.innerHTML = '🎤';
+                showStatus('🔄 Processing voice message...');
             }
-        }
-
-        function stopRecording() {
-            if (!isRecording) return;
-
-            mediaRecorder.stop();
-            isRecording = false;
-            voiceButton.classList.remove('recording');
-            voiceButton.innerHTML = '<i class="fas fa-microphone"></i>';
-            updateStatus('Processing voice message...');
         }
 
         async function sendVoiceMessage(audioBlob) {
             try {
                 const formData = new FormData();
-                formData.append('audio', audioBlob, 'voice_message.wav');
-
-                const response = await fetch(`${API_BASE}/voice-chat`, {
+                formData.append('audio_file', audioBlob, 'voice_message.wav');
+                
+                const response = await fetch(`${API_BASE_URL}/voice/chat`, {
                     method: 'POST',
-                    body: formData,
+                    body: formData
                 });
-
-                if (response.ok) {
-                    const transcribedText = response.headers.get('X-Transcribed-Text');
-                    const aiResponse = response.headers.get('X-AI-Response');
-                    
-                    if (transcribedText) {
-                        addMessage('user', transcribedText);
-                    }
-                    
-                    if (aiResponse) {
-                        addMessage('ai', aiResponse);
-                    }
-                    
-                    updateStatus('Ready to assist with your medical questions');
-                } else {
-                    throw new Error('Failed to process voice message');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                
+                const data = await response.json();
+                
+                // Add transcription as user message
+                addMessage(`🎤 "${data.transcription}"`, true);
+                
+                // Add bot response
+                addMessage(data.response, false, data);
+                
             } catch (error) {
                 console.error('Error sending voice message:', error);
-                updateStatus('Error processing voice message');
+                addMessage(`❌ Sorry, I couldn't process your voice message. Please try typing your question instead.`);
             }
+            
+            hideStatus();
         }
 
-        // Initialize
-        updateStatus('Ready to assist with your medical questions');
+        function clearChat() {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = `
+                <div class="message bot-message">
+                    👋 <strong>Welcome to your Open-Source Medical AI Assistant!</strong>
+                    <br><br>
+                    I can help you with:
+                    <div class="feature-grid">
+                        <div class="feature-item">🏥 General health information</div>
+                        <div class="feature-item">📋 Symptom guidance</div>
+                        <div class="feature-item">💊 Medication information</div>
+                        <div class="feature-item">🏃‍♂️ Wellness tips</div>
+                        <div class="feature-item">🎙️ Voice interactions</div>
+                        <div class="feature-item">🔬 Medical research</div>
+                    </div>
+                    <br>
+                    <strong>✨ Features:</strong>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>🔓 Completely open-source</li>
+                        <li>🖥️ Runs locally on your device</li>
+                        <li>🔒 Your data stays private</li>
+                        <li>⚡ No subscription fees</li>
+                        <li>🧠 Multiple AI models available</li>
+                    </ul>
+                    <br>
+                    <strong>🚨 Important:</strong> For medical emergencies, call 911 immediately!
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>

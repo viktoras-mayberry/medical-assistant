@@ -1,138 +1,164 @@
-# 🩺 Advanced Medical AI Assistant
+# 🏥 Open-Source Medical AI Assistant
 
-Welcome to the Medical AI Assistant, a state-of-the-art application that combines advanced medical language models with intuitive voice interaction. This sophisticated system goes beyond simple FAQ responses to provide comprehensive medical knowledge, insights, and guidance across all aspects of healthcare.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![React](https://img.shields.io/badge/React-18.2.0-blue.svg)](https://reactjs.org/)
+[![React Native](https://img.shields.io/badge/React%20Native-0.72.6-blue.svg)](https://reactnative.dev/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-green.svg)](https://fastapi.tiangolo.com/)
 
-## 🚀 Project Vision
+Welcome to the Open-Source Medical AI Assistant - a completely free, privacy-focused, and professional-grade medical AI platform. This comprehensive system combines advanced open-source language models with intuitive voice interaction, available as web and mobile applications.
 
-This isn't just another chatbot - it's a comprehensive medical knowledge companion designed to:
-- Provide evidence-based medical information across all specialties
-- Offer intelligent analysis of symptoms, conditions, and treatments
-- Serve as a bridge between patients and healthcare professionals
-- Deliver personalized health guidance while maintaining medical safety standards
+## 🌟 Project Vision
+
+A revolutionary medical AI platform designed to:
+- **🔓 Complete Privacy**: All processing happens locally on your device
+- **💡 Evidence-Based**: Provide medical information using cutting-edge AI models
+- **🌐 Multi-Platform**: Available as web app, mobile app, and API
+- **🤖 Professional Grade**: Enterprise-level features without subscription costs
+- **🔄 Extensible**: Open architecture for customization and enhancement
+- **🏥 Healthcare Bridge**: Connect patients with professional medical resources
 
 ## ✨ Key Features
 
 ### Core Capabilities
-- **Comprehensive Medical Knowledge**: Access to extensive medical databases covering symptoms, conditions, treatments, medications, and preventive care
-- **Dual Model Architecture**: Combines OpenAI's GPT-4 with fine-tuned local transformer models for specialized medical responses
-- **Voice-Enabled Interaction**: Natural speech recognition and synthesis for hands-free medical consultations
-- **Emergency Detection System**: Real-time identification of critical medical situations with immediate guidance
-- **Medical Query Classification**: Advanced NLP categorization for precise, context-aware responses
-- **Professional Interface**: Clean, accessible design optimized for medical use cases
+- **🔓 100% Open Source**: No API keys, no subscriptions, no external dependencies
+- **🖥️ Local Processing**: All AI computation happens on your device
+- **🔒 Privacy First**: Your medical data never leaves your computer
+- **🧠 Multiple AI Models**: Support for various open-source LLMs (Llama, Mistral, GPT-2, etc.)
+- **🎙️ Voice Integration**: Local speech-to-text (Whisper) and text-to-speech (gTTS)
+- **⚡ GPU Acceleration**: Optimized for both CPU and GPU processing
+- **🎯 Medical Focus**: Specialized medical knowledge base and emergency detection
 
 ### Advanced Features
-- **Fine-Tuning Capabilities**: Customize models with domain-specific medical datasets
-- **Multi-Modal Processing**: Handle both voice and text inputs seamlessly
-- **Intelligent Fallbacks**: Robust response system ensuring continuous operation
-- **Medical Safety Protocols**: Built-in disclaimers and professional consultation reminders
-- **Real-Time Audio Processing**: High-quality speech synthesis and recognition
+- **🎛️ Fine-Tuning Support**: Customize models with your own medical datasets
+- **🔄 Multi-Modal Processing**: Handle both voice and text inputs seamlessly
+- **📊 Real-Time Analytics**: Track usage and model performance
+- **🛡️ Safety Protocols**: Built-in medical disclaimers and emergency detection
+- **🎨 Modern UI**: Clean, accessible design optimized for medical consultations
+- **🔧 Model Management**: Switch between different AI models on the fly
 
 ## Technology Stack
 
-- **Backend**: FastAPI (Python)
-- **Medical LLM**: OpenAI GPT-4 / Custom Medical LLM
-- **Speech-to-Text**: Google Speech Recognition (Free)
-- **AI Processing**: Advanced medical knowledge base with emergency detection
-- **Text-to-Speech**: ElevenLabs API
-- **Frontend**: HTML5, CSS3, JavaScript (Medical-themed UI)
+### Backend
+- **API Framework**: FastAPI (Python)
+- **AI Models**: Transformers, PyTorch, Hugging Face
+- **Voice Processing**: OpenAI Whisper (local), gTTS
+- **Vector Database**: ChromaDB for medical knowledge
+- **Fine-Tuning**: Custom training pipeline for medical datasets
+
+### Frontend
+- **UI**: Modern HTML5, CSS3, JavaScript
 - **Audio**: Web Audio API, MediaRecorder API
-- **Medical Safety**: Built-in disclaimers and emergency detection
+- **Responsive Design**: Mobile-friendly interface
+- **Real-Time Updates**: Live system status and model information
+
+### AI Models Supported
+- **LLMs**: DialoGPT, GPT-2, DistilGPT-2, GODEL
+- **Speech**: Whisper (tiny, base, small, medium, large)
+- **Embeddings**: Sentence Transformers
+- **Custom**: Support for fine-tuned medical models
 
 ## Installation
 
 ### Prerequisites
 
-- Python 3.8 or higher
-- ElevenLabs API key
+- **Python 3.8 or higher** (Python 3.9+ recommended)
+- **4GB RAM minimum** (8GB+ recommended for larger models)
+- **Optional**: NVIDIA GPU with CUDA support for faster processing
 
 ### Step 1: Clone and Setup
 
 ```bash
-git clone <your-repository>
-cd voice-chat-ai-assistant
+git clone https://github.com/yourusername/open-source-medical-ai
+cd open-source-medical-ai
 ```
 
 ### Step 2: Install Dependencies
 
 ```bash
+# Install core dependencies
 pip install -r requirements.txt
+
+# For GPU acceleration (optional)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
-Note: If you have issues installing PyAudio, you may need to install system dependencies:
+**System Dependencies:**
 
 **On Ubuntu/Debian:**
 ```bash
-sudo apt-get install portaudio19-dev python3-pyaudio
+sudo apt-get update
+sudo apt-get install portaudio19-dev python3-pyaudio ffmpeg
 ```
 
 **On macOS:**
 ```bash
-brew install portaudio
+brew install portaudio ffmpeg
 ```
 
 **On Windows:**
-PyAudio should install automatically with pip.
-
-### Step 3: Environment Configuration
-
-1. Copy the environment example file:
 ```bash
-cp .env.example .env
+# Most dependencies install automatically
+# For FFmpeg, download from https://ffmpeg.org/download.html
 ```
 
-2. Edit `.env` and add your API key:
-```env
-ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+### Step 3: Initialize Models
+
+```bash
+# The system will automatically download models on first run
+# Or manually download specific models:
+python -c "import whisper; whisper.load_model('base')"
 ```
 
-### Step 4: Get ElevenLabs API Key
+### Step 4: Optional Fine-Tuning
 
-#### ElevenLabs API Key:
-1. Go to [ElevenLabs](https://elevenlabs.io/)
-2. Create an account or sign in
-3. Go to your profile settings
-4. Copy your API key to your `.env` file
-
-### Step 5: Configure Voice
-
-1. In the backend code (`main.py`), update the voice ID:
-```python
-voice_id = "XMBhZBHTRP7bO9ojOPI0"  # Replace with your preferred voice ID
+```bash
+# Fine-tune on your medical data
+python fine_tune_opensource.py --data data/medical_training_data.json
 ```
-
-2. To find available voices, you can use ElevenLabs dashboard or API to list voices.
 
 ## Usage
 
-### Running the Application
+### Quick Start
 
-1. Start the backend server:
+1. **Start the backend server:**
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-2. Open the frontend in your browser:
+2. **Open the frontend:**
 ```bash
-# Open the HTML file directly in browser or serve it
-python -m http.server 3000
-# Then visit http://localhost:3000/voice_chat_frontend.html
+# Serve the frontend
+python -m http.server 3000 --directory frontend
+# Visit: http://localhost:3000/index_new.html
 ```
 
-### How to Use
+3. **Or open directly in browser:**
+```bash
+# Simply open frontend/index_new.html in your browser
+```
 
-1. **Voice Messages**: 
-   - Press and hold the microphone button to record
-   - Release to send the voice message
-   - The AI will respond with both text and voice
+### Features
 
-2. **Text Messages**:
-   - Type your message in the input field
-   - Click send or press Enter
-   - The AI will respond with voice
+1. **Text Chat**: 
+   - Type medical questions in the input field
+   - Get detailed responses with risk assessment
+   - View sources and recommendations
 
-3. **Playing Voice Messages**:
-   - Click the play button on any voice message bubble
-   - Audio controls show message duration
+2. **Voice Chat**: 
+   - Click the microphone button to record
+   - Speak your medical question
+   - Get both text and audio responses
+
+3. **System Management**:
+   - View current AI model status
+   - Switch between different models
+   - Monitor system resources
+
+4. **Model Information**:
+   - Click "Models" to see available AI models
+   - View memory requirements and capabilities
+   - Check GPU acceleration status
 
 ## API Endpoints
 
@@ -255,23 +281,63 @@ You can add your tests in the `backend/tests/` directory. Example tests should c
 - Inactive users will be denied access to protected resources by the backend.
 - You can manage users via direct database access or by building an admin interface.
 
-## File Structure
+## 📁 Project Structure
 
 ```
-medical-ai-assistant/
-├── backend/
-│   ├── main.py                # Backend API server
-│   ├── medical_llm.py         # Medical LLM client
-│   └── config.py              # Configuration settings
-├── frontend/
-│   └── index.html             # Medical-themed frontend interface
-├── data/
-│   └── knowledge_base.txt     # Legacy knowledge base (deprecated)
-├── requirements.txt           # Python dependencies
-├── .env.example              # Environment variables template
-├── README.md                 # This file
-└── .env                      # Your API keys (create this)
+open-source-medical-ai/
+├── 📁 backend/                     # FastAPI Backend
+│   ├── main.py                    # Main API server
+│   ├── opensource_medical_llm.py  # Open-source LLM implementation
+│   ├── opensource_voice.py        # Voice processing system
+│   ├── medical_knowledge.py       # Medical knowledge engine
+│   ├── medical_analytics.py       # Analytics and logging
+│   ├── auth.py                    # Authentication system
+│   ├── database.py               # Database models
+│   ├── config.py                 # Configuration
+│   └── tests/                    # Backend tests
+│
+├── 📁 web/                        # React Web Application
+│   ├── public/
+│   │   └── index.html            # Web app entry point
+│   ├── src/
+│   │   ├── components/           # React components
+│   │   ├── pages/               # Page components
+│   │   ├── contexts/            # React contexts
+│   │   ├── styles/              # Styling
+│   │   ├── App.js               # Main App component
+│   │   └── index.js             # React entry point
+│   └── package.json             # Web dependencies
+│
+├── 📁 mobile/                     # React Native Mobile App
+│   ├── src/                     # Mobile app source
+│   └── package.json             # Mobile dependencies
+│
+├── 📁 frontend/                   # Legacy HTML Interface
+│   └── index.html               # Simple HTML interface
+│
+├── 📁 data/                       # Training Data
+│   └── medical_training_data.json # Medical training dataset
+│
+├── 📁 scripts/                    # Utility Scripts
+│   ├── setup.py                # Setup and initialization
+│   └── start_server.py         # Server startup
+│
+├── fine_tune_opensource.py       # Model fine-tuning script
+├── requirements.txt              # Python dependencies
+├── .env.example                 # Environment template
+├── .gitignore                   # Git ignore rules
+└── README.md                    # This documentation
 ```
+
+### Platform Overview
+
+| Platform | Technology | Features | Status |
+|----------|------------|----------|--------|
+| 🖥️ **Web App** | React 18 + FastAPI | Full-featured, Professional UI | ✅ Ready |
+| 📱 **Mobile App** | React Native + Expo | Cross-platform, Native feel | 🚧 In Development |
+| 🌐 **Legacy Web** | HTML5 + JavaScript | Simple, Fast loading | ✅ Ready |
+| 🔧 **Backend API** | FastAPI + Python | RESTful, High performance | ✅ Ready |
+| 🤖 **AI Engine** | Transformers + PyTorch | Local processing, Privacy-first | ✅ Ready |
 
 ## Medical Disclaimer
 
