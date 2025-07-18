@@ -7,23 +7,29 @@ pydantic==2.5.0
 aiofiles==24.1.0
 loguru==0.7.2
 
-# Open-Source LLM Dependencies
+# State-of-the-Art Medical AI Dependencies
 transformers==4.36.0
 torch==2.1.0
+torchvision==0.16.0
+torchaudio==2.1.0
 sentence-transformers==2.2.2
 langchain==0.0.350
 langchain-community==0.0.1
 huggingface-hub==0.19.4
 accelerate==0.25.0
 optimum==1.16.0
+bitsandbytes==0.41.3
 
-# Voice Processing (Open-Source)
+# Advanced Voice Processing (Open-Source)
 SpeechRecognition==3.10.0
 whisper==1.1.10
 gtts==2.4.0
 pydub==0.25.1
 soundfile==0.12.1
 librosa==0.10.1
+audio-processing==0.3.0
+voice-activity-detection==0.2.0
+speech-enhancement==0.1.0
 
 # Database dependencies
 sqlalchemy==2.0.23
@@ -37,18 +43,30 @@ passlib[bcrypt]==1.7.4
 
 # Vector Database for Medical Knowledge
 chromadb==0.4.18
-numpy==1.24.3
-scipy==1.11.4
+pinecone-client==2.2.4
+weaviate-client==3.25.3
+milvus==2.3.2
 
 # Scientific Computing
+numpy==1.24.3
+scipy==1.11.4
 scikit-learn==1.3.2
 pandas==2.1.4
+nltk==3.8.1
+spacy==3.7.2
+matplotlib==3.8.2
+seaborn==0.13.0
+jupyter==1.0.0
+networkx==3.2.1
 
 # Additional utilities
 email-validator==2.1.0
 requests==2.31.0
 click==8.1.7
 rich==13.7.0
+typer==0.9.0
+tqdm==4.66.1
+colorama==0.4.6
 
 # Testing dependencies
 pytest==7.4.3

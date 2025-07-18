@@ -10,25 +10,31 @@ import subprocess
 import webbrowser
 from pathlib import Path
 
+print("[DEBUG] start_medical_assistant.py script is running...")
+
 def check_dependencies():
     """Check if all required dependencies are installed."""
-    required_packages = [
-        'fastapi', 'uvicorn', 'python-dotenv', 'elevenlabs', 
-        'pydantic', 'SpeechRecognition', 'pyaudio', 'openai'
-    ]
-    
+    # Map import names to pip package names for accurate checking
+    required_packages = {
+        'fastapi': 'fastapi',
+        'uvicorn': 'uvicorn',
+        'dotenv': 'python-dotenv',
+        'elevenlabs': 'elevenlabs',
+        'pydantic': 'pydantic',
+        'speech_recognition': 'SpeechRecognition',
+        'pyaudio': 'pyaudio',
+        'openai': 'openai',
+    }
     missing_packages = []
-    for package in required_packages:
+    for import_name, pip_name in required_packages.items():
         try:
-            __import__(package)
+            __import__(import_name)
         except ImportError:
-            missing_packages.append(package)
-    
+            missing_packages.append(pip_name)
     if missing_packages:
         print(f"❌ Missing required packages: {', '.join(missing_packages)}")
         print("Please install them using: pip install -r requirements.txt")
         return False
-    
     print("✅ All dependencies are installed!")
     return True
 
@@ -39,35 +45,29 @@ def check_environment():
         print("❌ .env file not found!")
         print("Please copy .env.example to .env and configure your API keys.")
         return False
-    
     # Load environment variables
     with open(env_file, 'r') as f:
         env_content = f.read()
-    
     if "your_elevenlabs_api_key_here" in env_content:
         print("⚠️  Please configure your ElevenLabs API key in the .env file")
         return False
-    
     if "your_openai_api_key_here" in env_content:
         print("⚠️  Warning: OpenAI API key not configured. Using mock responses for medical queries.")
-    
     print("✅ Environment configuration looks good!")
     return True
 
 def start_backend():
     """Start the FastAPI backend server."""
     print("🚀 Starting Medical AI Assistant backend...")
-    
     # Change to backend directory
     os.chdir("backend")
-    
     # Start the server
     try:
         subprocess.run([
-            sys.executable, "-m", "uvicorn", 
-            "main:app", 
-            "--reload", 
-            "--host", "0.0.0.0", 
+            sys.executable, "-m", "uvicorn",
+            "main:app",
+            "--reload",
+            "--host", "0.0.0.0",
             "--port", "8000"
         ], check=True)
     except subprocess.CalledProcessError as e:
@@ -76,7 +76,6 @@ def start_backend():
     except KeyboardInterrupt:
         print("\n🛑 Backend server stopped by user.")
         return True
-    
     return True
 
 def open_frontend():

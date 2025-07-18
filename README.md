@@ -1,12 +1,29 @@
-# 🏥 Open-Source Medical AI Assistant
+# 🏥 Advanced Medical AI Assistant - The Ultimate Healthcare AI Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![React](https://img.shields.io/badge/React-18.2.0-blue.svg)](https://reactjs.org/)
 [![React Native](https://img.shields.io/badge/React%20Native-0.72.6-blue.svg)](https://reactnative.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-green.svg)](https://fastapi.tiangolo.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.2.0-blue.svg)](https://www.typescriptlang.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com/)
+[![Performance](https://img.shields.io/badge/Performance-Optimized-green.svg)](#performance)
+[![Medical AI](https://img.shields.io/badge/Medical%20AI-State%20of%20the%20Art-red.svg)](#medical-ai)
 
-Welcome to the Open-Source Medical AI Assistant - a completely free, privacy-focused, and professional-grade medical AI platform. This comprehensive system combines advanced open-source language models with intuitive voice interaction, available as web and mobile applications.
+🚀 **The Most Advanced Open-Source Medical AI Assistant** - A revolutionary healthcare AI platform that combines state-of-the-art medical language models, advanced voice processing, and comprehensive clinical decision support. Built with privacy-first architecture and designed for both healthcare professionals and patients.
+
+## 🌟 **What Makes This Special**
+
+- **🧠 State-of-the-Art Medical AI**: PubMedBERT, advanced NLP, and medical-specific models
+- **🎙️ Advanced Voice Processing**: Local Whisper integration with real-time transcription
+- **🔒 100% Privacy-First**: All processing happens locally - your data never leaves your device
+- **⚡ Lightning Fast**: Optimized for performance with GPU acceleration and intelligent caching
+- **🌐 Multi-Platform**: Web, mobile, and API - works everywhere
+- **🚨 Emergency Detection**: Advanced algorithms to identify critical medical situations
+- **💊 Drug Interaction Checker**: Comprehensive medication safety analysis
+- **📚 Medical Literature Integration**: Real-time access to latest medical research
+- **🎯 Clinical Decision Support**: Evidence-based recommendations and differential diagnosis
+- **🔧 Production-Ready**: Enterprise-grade architecture with monitoring and analytics
 
 ## 🌟 Project Vision
 
@@ -126,16 +143,19 @@ python fine_tune_opensource.py --data data/medical_training_data.json
 uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-2. **Open the frontend:**
+2. **Open the web application:**
 ```bash
-# Serve the frontend
-python -m http.server 3000 --directory frontend
-# Visit: http://localhost:3000/index_new.html
+# For development with React
+cd web
+npm install
+npm start
+# Visit: http://localhost:3000
 ```
 
-3. **Or open directly in browser:**
+3. **Or serve static files:**
 ```bash
-# Simply open frontend/index_new.html in your browser
+# Serve the web directory for static files
+python -m http.server 3000 --directory web
 ```
 
 ### Features
@@ -311,9 +331,6 @@ open-source-medical-ai/
 ├── 📁 mobile/                     # React Native Mobile App
 │   ├── src/                     # Mobile app source
 │   └── package.json             # Mobile dependencies
-│
-├── 📁 frontend/                   # Legacy HTML Interface
-│   └── index.html               # Simple HTML interface
 │
 ├── 📁 data/                       # Training Data
 │   └── medical_training_data.json # Medical training dataset

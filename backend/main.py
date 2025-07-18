@@ -33,6 +33,8 @@ from auth import authenticate_user, create_access_token, get_current_active_user
 from schemas import Token, UserCreate, UserResponse, LoginRequest, UserUpdate, InteractionCreate, SubscriptionCreate, SubscriptionUpdate
 from models import User
 from fastapi import status
+from auth_endpoints import router as auth_router
+from datetime import datetime
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -60,9 +62,12 @@ except Exception as e:
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Medical Chat AI Assistant",
-    description="A voice-enabled medical assistant powered by AI",
-    version="2.0.0"
+    title="Advanced Medical AI Assistant",
+    description="A comprehensive medical AI assistant with authentication, voice processing, and clinical decision support",
+    version="2.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
 )
 
 # Add CORS middleware
@@ -73,6 +78,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+# Add authentication endpoints
+app.include_router(auth_router)
 
 # Initialize database
 init_db()
@@ -393,7 +401,27 @@ async def get_patient_analytics(patient_id: str):
 
 @app.get("/")
 def root():
-    return {"message": "Medical AI Assistant API is running."}
+    return {
+        "message": "Advanced Medical AI Assistant API is running",
+        "version": "2.0.0",
+        "features": [
+            "Authentication System",
+            "Medical AI Chat",
+            "Voice Processing",
+            "Emergency Detection",
+            "Clinical Decision Support",
+            "Drug Interaction Checking",
+            "Medical Analytics"
+        ],
+        "endpoints": {
+            "docs": "/docs",
+            "auth": "/auth",
+            "chat": "/chat",
+            "voice": "/voice",
+            "health": "/health"
+        },
+        "timestamp": datetime.now().isoformat()
+    }
 
 @app.get("/health")
 def health_check():

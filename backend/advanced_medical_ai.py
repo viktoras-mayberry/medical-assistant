@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """
 Advanced Medical AI Conversational Engine
-This module creates an interactive medical AI assistant using advanced NLP techniques
-without external dependencies like OpenAI API.
+========================================
+
+This module creates the most advanced medical AI assistant using:
+- State-of-the-art medical language models
+- Advanced NLP and semantic understanding
+- Real-time medical knowledge integration
+- Clinical decision support capabilities
+- Multi-modal medical analysis
+- No external API dependencies
 """
 
 import json
@@ -11,15 +18,50 @@ import logging
 import asyncio
 from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, asdict
-from datetime import datetime
-import nltk
-import spacy
-from sentence_transformers import SentenceTransformer
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import TfidfVectorizer
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
-import torch
+from datetime import datetime, timedelta
+import time
+import hashlib
+from pathlib import Path
+import requests
+from concurrent.futures import ThreadPoolExecutor
+
+try:
+    import nltk
+    import spacy
+    from sentence_transformers import SentenceTransformer
+    import numpy as np
+    from sklearn.metrics.pairwise import cosine_similarity
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.cluster import KMeans
+    import pandas as pd
+    NLP_AVAILABLE = True
+except ImportError:
+    NLP_AVAILABLE = False
+    print("NLP libraries not available. Install with: pip install nltk spacy sentence-transformers scikit-learn pandas")
+
+try:
+    from transformers import (
+        AutoTokenizer, 
+        AutoModelForSequenceClassification, 
+        AutoModelForCausalLM,
+        AutoModel,
+        pipeline,
+        BitsAndBytesConfig
+    )
+    import torch
+    TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    TRANSFORMERS_AVAILABLE = False
+    print("Transformers not available. Install with: pip install transformers torch")
+
+try:
+    import chromadb
+    from chromadb.utils import embedding_functions
+    from chromadb.config import Settings
+    CHROMADB_AVAILABLE = True
+except ImportError:
+    CHROMADB_AVAILABLE = False
+    print("ChromaDB not available. Install with: pip install chromadb")
 
 # Download required NLTK data
 try:

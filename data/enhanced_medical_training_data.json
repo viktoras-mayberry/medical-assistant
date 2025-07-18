@@ -1,0 +1,295 @@
+[
+  {
+    "id": "cardiology_001",
+    "input": "chest pain shortness of breath",
+    "output": "Chest pain with shortness of breath can indicate several serious conditions including myocardial infarction (heart attack), angina, pulmonary embolism, or pneumonia. This combination of symptoms requires immediate medical evaluation. Call 911 if you experience severe chest pain, especially if accompanied by sweating, nausea, or pain radiating to the arm, jaw, or back.",
+    "intent": "symptom_report",
+    "category": "cardiology",
+    "risk_level": "critical",
+    "confidence": 0.95,
+    "keywords": ["chest pain", "shortness of breath", "myocardial infarction", "angina"],
+    "icd_codes": ["R06.02", "R50.9", "I21.9"],
+    "differential_diagnosis": [
+      "Myocardial infarction",
+      "Unstable angina",
+      "Pulmonary embolism",
+      "Pneumonia",
+      "Aortic dissection"
+    ],
+    "red_flags": [
+      "Severe chest pain",
+      "Difficulty breathing",
+      "Sweating",
+      "Nausea",
+      "Radiating pain"
+    ],
+    "immediate_actions": [
+      "Call 911 immediately",
+      "Chew aspirin if not allergic",
+      "Loosen tight clothing",
+      "Stay calm and rest"
+    ]
+  },
+  {
+    "id": "neurology_001",
+    "input": "sudden severe headache worst headache of my life",
+    "output": "A sudden, severe headache described as 'the worst headache of your life' is a medical emergency that could indicate a subarachnoid hemorrhage (brain bleed), meningitis, or other serious neurological condition. This type of headache requires immediate emergency medical attention. Do not delay - call 911 or go to the emergency room immediately.",
+    "intent": "symptom_report",
+    "category": "neurology",
+    "risk_level": "critical",
+    "confidence": 0.98,
+    "keywords": ["sudden headache", "severe headache", "worst headache", "thunderclap headache"],
+    "icd_codes": ["G93.1", "I60.9", "G03.9"],
+    "differential_diagnosis": [
+      "Subarachnoid hemorrhage",
+      "Meningitis",
+      "Intracranial hemorrhage",
+      "Acute angle-closure glaucoma",
+      "Temporal arteritis"
+    ],
+    "red_flags": [
+      "Sudden onset",
+      "Severe intensity",
+      "Neck stiffness",
+      "Fever",
+      "Photophobia",
+      "Altered consciousness"
+    ],
+    "immediate_actions": [
+      "Call 911 immediately",
+      "Go to emergency room",
+      "Avoid bright lights",
+      "Stay calm and still"
+    ]
+  },
+  {
+    "id": "endocrinology_001",
+    "input": "diabetes blood sugar management",
+    "output": "Diabetes management involves monitoring blood glucose levels, maintaining a healthy diet, regular exercise, and taking prescribed medications. Target blood glucose levels are typically 80-130 mg/dL before meals and less than 180 mg/dL after meals. HbA1c should be less than 7% for most adults. Work with your healthcare provider to develop a personalized diabetes management plan.",
+    "intent": "condition_inquiry",
+    "category": "endocrinology",
+    "risk_level": "moderate",
+    "confidence": 0.92,
+    "keywords": ["diabetes", "blood sugar", "glucose", "HbA1c", "insulin"],
+    "icd_codes": ["E11.9", "E10.9"],
+    "management_strategies": [
+      "Regular glucose monitoring",
+      "Healthy diet with carbohydrate counting",
+      "Regular physical activity",
+      "Medication adherence",
+      "Regular check-ups"
+    ],
+    "complications_to_monitor": [
+      "Diabetic ketoacidosis",
+      "Hypoglycemia",
+      "Diabetic retinopathy",
+      "Diabetic nephropathy",
+      "Diabetic neuropathy"
+    ]
+  },
+  {
+    "id": "pulmonology_001",
+    "input": "asthma attack difficulty breathing wheezing",
+    "output": "An asthma attack involves inflammation and narrowing of airways, causing difficulty breathing, wheezing, and chest tightness. Use your rescue inhaler (albuterol) as prescribed. If symptoms don't improve within 15-20 minutes, seek emergency medical care. Severe asthma attacks can be life-threatening and require immediate medical attention.",
+    "intent": "symptom_report",
+    "category": "pulmonology",
+    "risk_level": "high",
+    "confidence": 0.94,
+    "keywords": ["asthma", "wheezing", "difficulty breathing", "chest tightness"],
+    "icd_codes": ["J45.9", "J46"],
+    "immediate_treatment": [
+      "Use rescue inhaler",
+      "Sit upright",
+      "Stay calm",
+      "Avoid triggers",
+      "Seek help if no improvement"
+    ],
+    "warning_signs": [
+      "Severe shortness of breath",
+      "Unable to speak in full sentences",
+      "Blue lips or fingernails",
+      "Chest retractions",
+      "Peak flow in red zone"
+    ]
+  },
+  {
+    "id": "gastroenterology_001",
+    "input": "severe abdominal pain nausea vomiting",
+    "output": "Severe abdominal pain with nausea and vomiting can indicate various conditions including appendicitis, gallbladder disease, bowel obstruction, or peptic ulcer disease. The location, character, and associated symptoms help determine the cause. Seek immediate medical attention if you experience severe, persistent abdominal pain, especially if accompanied by fever, rigid abdomen, or signs of dehydration.",
+    "intent": "symptom_report",
+    "category": "gastroenterology",
+    "risk_level": "high",
+    "confidence": 0.89,
+    "keywords": ["abdominal pain", "nausea", "vomiting", "stomach pain"],
+    "icd_codes": ["R10.9", "R11.2", "K35.9"],
+    "differential_diagnosis": [
+      "Appendicitis",
+      "Cholecystitis",
+      "Bowel obstruction",
+      "Peptic ulcer disease",
+      "Pancreatitis"
+    ],
+    "red_flags": [
+      "Severe pain",
+      "Fever",
+      "Rigid abdomen",
+      "Signs of dehydration",
+      "Blood in vomit or stool"
+    ]
+  },
+  {
+    "id": "mental_health_001",
+    "input": "depression anxiety feeling hopeless",
+    "output": "Depression and anxiety are serious mental health conditions that can significantly impact your quality of life. Symptoms include persistent sadness, loss of interest, anxiety, and feelings of hopelessness. These conditions are treatable with therapy, medication, or a combination of both. If you're having thoughts of self-harm, please seek immediate help by calling 988 (Suicide & Crisis Lifeline) or going to your nearest emergency room.",
+    "intent": "symptom_report",
+    "category": "mental_health",
+    "risk_level": "moderate",
+    "confidence": 0.91,
+    "keywords": ["depression", "anxiety", "hopeless", "mental health"],
+    "icd_codes": ["F32.9", "F41.9"],
+    "treatment_options": [
+      "Cognitive behavioral therapy",
+      "Medication management",
+      "Support groups",
+      "Lifestyle changes",
+      "Mindfulness practices"
+    ],
+    "crisis_resources": [
+      "988 Suicide & Crisis Lifeline",
+      "Crisis Text Line (text HOME to 741741)",
+      "Local emergency services",
+      "Mental health professionals"
+    ]
+  },
+  {
+    "id": "dermatology_001",
+    "input": "skin rash itching red patches",
+    "output": "Skin rashes with itching and red patches can result from various causes including allergic reactions, eczema, psoriasis, or infections. The appearance, location, and associated symptoms help determine the cause. Avoid scratching to prevent secondary infection. Use gentle, fragrance-free skincare products and consider antihistamines for itching. See a dermatologist if symptoms persist or worsen.",
+    "intent": "symptom_report",
+    "category": "dermatology",
+    "risk_level": "low",
+    "confidence": 0.85,
+    "keywords": ["skin rash", "itching", "red patches", "dermatitis"],
+    "icd_codes": ["L30.9", "L20.9"],
+    "common_causes": [
+      "Contact dermatitis",
+      "Atopic dermatitis",
+      "Psoriasis",
+      "Fungal infections",
+      "Drug reactions"
+    ],
+    "care_recommendations": [
+      "Gentle cleansing",
+      "Moisturize regularly",
+      "Avoid known triggers",
+      "Use cool compresses",
+      "Consider antihistamines"
+    ]
+  },
+  {
+    "id": "infectious_disease_001",
+    "input": "fever chills body aches fatigue",
+    "output": "Fever with chills, body aches, and fatigue are common symptoms of viral or bacterial infections, including flu, COVID-19, or other respiratory infections. Rest, hydration, and symptomatic treatment are important. Monitor temperature and seek medical attention if fever exceeds 103°F (39.4°C), symptoms worsen, or you develop difficulty breathing or severe headache.",
+    "intent": "symptom_report",
+    "category": "infectious_disease",
+    "risk_level": "moderate",
+    "confidence": 0.88,
+    "keywords": ["fever", "chills", "body aches", "fatigue", "infection"],
+    "icd_codes": ["R50.9", "R53.1"],
+    "supportive_care": [
+      "Rest and sleep",
+      "Increased fluid intake",
+      "Fever reducers (acetaminophen/ibuprofen)",
+      "Isolation if contagious",
+      "Monitor symptoms"
+    ],
+    "warning_signs": [
+      "High fever (>103°F)",
+      "Difficulty breathing",
+      "Severe headache",
+      "Neck stiffness",
+      "Persistent vomiting"
+    ]
+  },
+  {
+    "id": "orthopedics_001",
+    "input": "joint pain stiffness swelling arthritis",
+    "output": "Joint pain with stiffness and swelling can indicate arthritis, injury, or other musculoskeletal conditions. Osteoarthritis is common with aging, while rheumatoid arthritis is an autoimmune condition. Treatment may include rest, ice/heat therapy, anti-inflammatory medications, physical therapy, and lifestyle modifications. See a healthcare provider for proper diagnosis and treatment plan.",
+    "intent": "symptom_report",
+    "category": "orthopedics",
+    "risk_level": "moderate",
+    "confidence": 0.87,
+    "keywords": ["joint pain", "stiffness", "swelling", "arthritis"],
+    "icd_codes": ["M25.9", "M06.9", "M15.9"],
+    "management_strategies": [
+      "Rest and activity modification",
+      "Physical therapy",
+      "Weight management",
+      "Anti-inflammatory medications",
+      "Hot/cold therapy"
+    ],
+    "types_of_arthritis": [
+      "Osteoarthritis",
+      "Rheumatoid arthritis",
+      "Psoriatic arthritis",
+      "Gout",
+      "Septic arthritis"
+    ]
+  },
+  {
+    "id": "prevention_001",
+    "input": "how to prevent heart disease",
+    "output": "Heart disease prevention involves lifestyle modifications and risk factor management. Maintain a healthy diet low in saturated fats, exercise regularly (at least 150 minutes per week), avoid smoking, limit alcohol consumption, manage stress, and maintain healthy weight. Regular check-ups to monitor blood pressure, cholesterol, and diabetes are essential. Follow your healthcare provider's recommendations for medications if needed.",
+    "intent": "prevention_inquiry",
+    "category": "prevention",
+    "risk_level": "low",
+    "confidence": 0.93,
+    "keywords": ["prevent", "heart disease", "cardiovascular", "lifestyle"],
+    "prevention_strategies": [
+      "Healthy diet (Mediterranean style)",
+      "Regular physical activity",
+      "Smoking cessation",
+      "Stress management",
+      "Weight management",
+      "Regular health screenings"
+    ],
+    "risk_factors": [
+      "High blood pressure",
+      "High cholesterol",
+      "Diabetes",
+      "Smoking",
+      "Obesity",
+      "Family history"
+    ]
+  },
+  {
+    "id": "medication_001",
+    "input": "side effects of blood pressure medication",
+    "output": "Common side effects of blood pressure medications vary by drug class. ACE inhibitors may cause a dry cough, beta-blockers can cause fatigue or dizziness, diuretics may lead to frequent urination, and calcium channel blockers might cause ankle swelling. Most side effects are mild and temporary. Never stop medications without consulting your healthcare provider, as this can lead to dangerous blood pressure spikes.",
+    "intent": "medication_inquiry",
+    "category": "medications",
+    "risk_level": "low",
+    "confidence": 0.90,
+    "keywords": ["side effects", "blood pressure", "medication", "antihypertensive"],
+    "medication_classes": [
+      "ACE inhibitors",
+      "Beta-blockers",
+      "Diuretics",
+      "Calcium channel blockers",
+      "ARBs"
+    ],
+    "common_side_effects": [
+      "Dizziness",
+      "Fatigue",
+      "Cough",
+      "Ankle swelling",
+      "Frequent urination"
+    ],
+    "important_notes": [
+      "Don't stop medications abruptly",
+      "Report side effects to healthcare provider",
+      "Monitor blood pressure regularly",
+      "Follow prescribed dosing schedule"
+    ]
+  }
+]
